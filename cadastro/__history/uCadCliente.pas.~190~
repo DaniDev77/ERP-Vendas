@@ -76,6 +76,7 @@ type
     FDQListagemdocumento: TStringField;
     FDQListagemcreditoCliente: TFMTBCDField;
     edtTotalCredito: TCurrencyEdit;
+    Label12: TLabel;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnNovoClick(Sender: TObject);
     procedure btnAlterarClick(Sender: TObject);
@@ -89,8 +90,9 @@ type
     procedure lblCpfCnpjClick(Sender: TObject);
     procedure edtTelefoneKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormDestroy(Sender: TObject);
-    procedure edtCreditoChange(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure btnGravarClick(Sender: TObject);
+    procedure FDQListagemAfterScroll(DataSet: TDataSet);
     //procedure edtCreditoEnter(Sender: TObject);
 
 
@@ -137,6 +139,7 @@ begin
      edtEndereco.Text        :=oCliente.endereco;
      edtBairro.Text          :=oCliente.bairro;
      edtCidade.Text          :=oCliente.cidade;
+     edtUF.Text              :=oCliente.estado;
      edtTelefone.Text        :=oCliente.telefone;
      edtEmail.Text           :=oCliente.email;
      edtDataNascimento.Date  :=oCliente.dataNascimento;
@@ -152,6 +155,20 @@ begin
    end;
 
    inherited;
+
+end;
+
+procedure TfrmCadCliente.btnGravarClick(Sender: TObject);
+begin
+ if not EmailValido(EdtEmail.Text) then
+  begin
+    ShowMessage('E-mail inválido!');
+    EdtEmail.SetFocus;
+    Exit;
+  end;
+
+  ShowMessage('Cadastro salvo!');
+  inherited;
 
 end;
 
@@ -239,25 +256,6 @@ begin
   edtCpfCnpj.SelStart := Length(edtCpfCnpj.Text); // cursor no final
 end;
 
-procedure TfrmCadCliente.edtCreditoChange(Sender: TObject);
-begin
-  inherited;
-
-end;
-
-//procedure TfrmCadCliente.edtCreditoEnter(Sender: TObject);
-//begin
-//  inherited;
-//  edtTotalCredito.Value:=TotalizarProduto(edtValorUnitario.Value, edtQuantidade.Value);
-//end;
-//
-//
-//function TfrmCadCliente.TotalizarCredito(CreditoAtual,Qu:Double):Double;
-// begin
-//     Result:=valorUnitario + Quantidade;
-// end;
-
-
 procedure TfrmCadCliente.edtTelefoneKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
 var
 num: string;
@@ -303,6 +301,24 @@ end;
 
 
 
+procedure TfrmCadCliente.FDQListagemAfterScroll(DataSet: TDataSet);
+var
+  saldo: Double;
+begin
+  if FDQListagem.IsEmpty then
+  begin
+    edtTotalCredito.Value := 0;
+    Exit;
+  end;
+  try
+    saldo := oCredito.ObterSaldo(
+               FDQListagem.FieldByName('clienteId').AsInteger);
+    edtTotalCredito.Value := saldo;
+  except
+    edtTotalCredito.Value := 0;
+  end;
+end;
+
 procedure TfrmCadCliente.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   inherited;
@@ -345,6 +361,7 @@ end;
 procedure TfrmCadCliente.FormShow(Sender: TObject);
 begin
   inherited;
+  FDQListagem.AfterScroll := FDQListagemAfterScroll;
   SalvarColunas(grdListagem);
   CentralizarDadosGrid(grdListagem);
   CentralizarTitulosGrid(grdListagem);
@@ -354,64 +371,83 @@ end;
 function TfrmCadCliente.Gravar(EstadoDoCadastro: TEstadoCadastro): Boolean;
 var
   diferenca: Double;
+  saldoAtual: Double;
+  novoStatus: Integer;
 begin
-  // ?? ID
+  // ID
   if edtClienteId.Text <> '' then
     oCliente.codigo := StrToInt(edtClienteId.Text)
   else
     oCliente.codigo := 0;
 
-  // ?? DADOS
+  // DADOS
   oCliente.nome           := edtNome.Text;
   oCliente.endereco       := edtEndereco.Text;
   oCliente.cidade         := edtCidade.Text;
   oCliente.bairro         := edtBairro.Text;
   oCliente.cep            := edtCEP.Text;
   oCliente.telefone       := edtTelefone.Text;
+  oCliente.estado         := edtUF.Text;
   oCliente.email          := edtEmail.Text;
   oCliente.dataNascimento := edtDataNascimento.Date;
   oCliente.statusId       := lkpStatus.KeyValue;
   oCliente.documentoId    := lkpPessoa.KeyValue;
   oCliente.documento      := edtCpfCnpj.Text;
 
-  //
-  // oCliente.credito := edtCredito.Value;
+  // VALIDAÇÃO: não permite status "positivo" com crédito negativo
+  if EstadoDoCadastro = ecAlterar then
+  begin
+    saldoAtual := oCredito.ObterSaldo(oCliente.codigo);
+    novoStatus := oCliente.statusId;
 
-  //  INSERT OU UPDATE
+    if (saldoAtual < 0) and (novoStatus in [1, 4, 5]) then
+    begin
+      MessageDlg(
+        'Não é possível definir este status.' + #13#10 +
+        'O cliente possui saldo negativo de R$ ' +
+        FormatFloat('#,##0.00', saldoAtual) + '.' + #13#10 +
+        'Regularize o crédito antes de alterar o status.',
+        mtWarning, [mbOK], 0);
+      lkpStatus.SetFocus;
+      Result := False;
+      Exit;
+    end;
+  end;
+
+  // INSERT OU UPDATE
   if EstadoDoCadastro = ecInserir then
     Result := oCliente.Inserir
   else
     Result := oCliente.Atualizar;
 
-  //  CONTROLE DE CRÉDITO (ÚNICO LUGAR)
+  // CONTROLE DE CRÉDITO (ÚNICO LUGAR)
   if Result then
   begin
-    //  NOVO CLIENTE
+    // NOVO CLIENTE
     if EstadoDoCadastro = ecInserir then
     begin
       if edtCredito.Value > 0 then
         oCredito.AdicionarCredito(oCliente.codigo, edtCredito.Value);
     end
-
-    //  ALTERAÇÃO
+    // ALTERAÇÃO
     else
     begin
       diferenca := edtCredito.Value - CreditoOriginal;
-
       if diferenca > 0 then
         oCredito.AdicionarCredito(oCliente.codigo, diferenca)
-
       else if diferenca < 0 then
         oCredito.DescontarCredito(oCliente.codigo, -Abs(diferenca));
     end;
 
-    //  STATUS
+    // STATUS
     oCliente.AtualizarStatus;
+
+    // LIMPA CAMPOS DE CRÉDITO MANUALMENTE (ReadOnly não é limpo pelo LimparEdits)
+    edtCredito.Value      := 0;
+    edtTotalCredito.Value := 0;
+    CreditoOriginal       := 0;
   end;
 end;
-
-
-
 
 procedure TfrmCadCliente.grdListagemDrawColumnCell(Sender: TObject;
   const Rect: TRect; DataCol: Integer; Column: TColumn;

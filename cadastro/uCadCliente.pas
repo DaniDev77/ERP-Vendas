@@ -130,33 +130,35 @@ end;
 
 procedure TfrmCadCliente.btnAlterarClick(Sender: TObject);
 begin
+  if oCliente.Selecionar(FDQListagem.FieldByName('clienteID').AsInteger) then
+  begin
+    edtClienteId.Text       := IntToStr(oCliente.codigo);
+    edtNome.Text            := oCliente.nome;
+    edtCEP.Text             := oCliente.cep;
+    edtEndereco.Text        := oCliente.endereco;
+    edtBairro.Text          := oCliente.bairro;
+    edtCidade.Text          := oCliente.cidade;
+    edtUF.Text              := oCliente.estado;
+    edtTelefone.Text        := oCliente.telefone;
+    edtEmail.Text           := oCliente.email;
+    edtDataNascimento.Date  := oCliente.dataNascimento;
+    lkpStatus.KeyValue      := oCliente.statusId;
+    lkpPessoa.KeyValue      := oCliente.documentoId;
+    edtCpfCnpj.Text         := oCliente.documento;
+    edtCredito.Value        := oCliente.credito;
+    CreditoOriginal         := oCliente.credito;
 
-
- if oCliente.Selecionar(FDQListagem.FieldByName('clienteID').AsInteger) then begin
-     edtClienteId.Text       :=IntToStr(oCliente.codigo);
-     edtNome.Text            :=oCliente.nome;
-     edtCEP.Text             :=oCliente.cep;
-     edtEndereco.Text        :=oCliente.endereco;
-     edtBairro.Text          :=oCliente.bairro;
-     edtCidade.Text          :=oCliente.cidade;
-     edtUF.Text              :=oCliente.estado;
-     edtTelefone.Text        :=oCliente.telefone;
-     edtEmail.Text           :=oCliente.email;
-     edtDataNascimento.Date  :=oCliente.dataNascimento;
-     lkpStatus.KeyValue      :=oCliente.statusId;
-     lkpPessoa.KeyValue      := oCliente.documentoId;
-     edtCpfCnpj.Text         := oCliente.documento;
-     edtCredito.Value        :=oCliente.credito;
-     CreditoOriginal := oCliente.credito;
+    // CARREGAR CRÉDITO ATUAL AO ABRIR PARA EDIÇÃO
+    edtTotalCredito.Value   := oCredito.ObterSaldo(oCliente.codigo);
   end
-   else begin
-     btnCancelar.Click;
-     Abort;
-   end;
-
-   inherited;
-
+  else
+  begin
+    btnCancelar.Click;
+    Abort;
+  end;
+  inherited;
 end;
+
 
 procedure TfrmCadCliente.btnGravarClick(Sender: TObject);
 begin
@@ -441,9 +443,13 @@ begin
 
     // STATUS
     oCliente.AtualizarStatus;
+
+    // LIMPA CAMPOS DE CRÉDITO MANUALMENTE (ReadOnly não é limpo pelo LimparEdits)
+    edtCredito.Value      := 0;
+    edtTotalCredito.Value := 0;
+    CreditoOriginal       := 0;
   end;
 end;
-
 
 procedure TfrmCadCliente.grdListagemDrawColumnCell(Sender: TObject;
   const Rect: TRect; DataCol: Integer; Column: TColumn;

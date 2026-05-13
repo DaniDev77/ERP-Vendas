@@ -328,8 +328,7 @@ inherited frmCadCliente: TfrmCadCliente
     end
     inherited tabManutencao: TTabSheet
       ParentDoubleBuffered = False
-      ExplicitLeft = 8
-      ExplicitTop = 28
+      ExplicitTop = 22
       ExplicitWidth = 755
       ExplicitHeight = 377
       object CEP: TLabel
@@ -378,14 +377,14 @@ inherited frmCadCliente: TfrmCadCliente
           'POS ABAIXO:'
       end
       object Label11: TLabel
-        Left = 306
+        Left = 309
         Top = 261
-        Width = 110
+        Width = 158
         Height = 13
-        Caption = 'ADICIONAR CREDITO:'
+        Caption = 'EDITAR QUANTIDADE CREDITO:'
       end
       object Label12: TLabel
-        Left = 464
+        Left = 492
         Top = 261
         Width = 84
         Height = 13
@@ -536,7 +535,7 @@ inherited frmCadCliente: TfrmCadCliente
         TabOrder = 13
       end
       object edtTotalCredito: TCurrencyEdit
-        Left = 464
+        Left = 492
         Top = 280
         Width = 81
         Height = 21
