@@ -53,6 +53,7 @@ type
     procedure LimparImagem1Click(Sender: TObject);
     procedure CarregarImagem1Click(Sender: TObject);
     procedure grdListagemCellClick(Column: TColumn);
+    procedure imgImagemClick(Sender: TObject);
    // procedure tabManutencaoContextPopup(Sender: TObject; MousePos: TPoint; var Handled: Boolean);
    // procedure edtClienteIdChange(Sender: TObject);
    // procedure dtslistagemDataChange(Sender: TObject; Field: TField);
@@ -132,6 +133,14 @@ begin
   end;
 end;
 
+
+procedure TfrmCadProduto.imgImagemClick(Sender: TObject);
+var
+  P: TPoint;
+begin
+  P := Mouse.CursorPos;
+  ppmImagem.Popup(P.X, P.Y);
+end;
 
 procedure TfrmCadProduto.LimparImagem1Click(Sender: TObject);
 begin

@@ -242,6 +242,7 @@ inherited frmCadProduto: TfrmCadProduto
           Height = 121
           Align = alClient
           PopupMenu = ppmImagem
+          OnClick = imgImagemClick
           ExplicitLeft = 32
           ExplicitWidth = 97
           ExplicitHeight = 88
@@ -347,6 +348,9 @@ inherited frmCadProduto: TfrmCadProduto
     Top = 8
   end
   object ppmImagem: TPopupMenu
+    BiDiMode = bdRightToLeft
+    ParentBiDiMode = False
+    TrackButton = tbLeftButton
     Left = 471
     Top = 72
     object CarregarImagem1: TMenuItem

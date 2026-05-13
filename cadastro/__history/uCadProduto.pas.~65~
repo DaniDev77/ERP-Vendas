@@ -96,11 +96,15 @@ else
   oProduto.valor         :=edtValor.Value;
   oProduto.quantidade    :=edtQuantidade.Value;
 
-  // Salva imagem apenas se o TImage tiver uma imagem carregada
-  if Assigned(imgImagem.Picture.Graphic) then
-    oProduto.foto := TBitmap(imgImagem.Picture.Graphic)
-  else
-    oProduto.foto := nil; // permite salvar sem imagem
+
+  oProduto.foto.Assign(imgImagem.Picture.Graphic);
+   // Verifica se o valor é válido antes de gravar
+  if oProduto.valor <= 0 then // ? comparação correta
+  begin
+    MessageDlg('Valor do produto deve ser maior que zero!', mtWarning, [mbOK], 0);
+    edtValor.SetFocus;
+    Abort; // ? para a gravação
+  end;
 
  if (EstadoDoCadastro=ecInserir) then
   Result:=oProduto.Inserir
@@ -152,12 +156,9 @@ begin
      lkpCategoria.KeyValue  :=oProduto.categoriaId;
      edtValor.Value         :=oProduto.valor;
      edtQuantidade.Value    :=oProduto.quantidade;
-     // Carrega imagem se existir, senão limpa o TImage
-    if Assigned(oProduto.foto) then
-      imgImagem.Picture.Assign(oProduto.foto)
-    else
-      imgImagem.Picture := nil;
-      edtNome.SetFocus;
+    
+      imgImagem.Picture.Assign(oProduto.foto);
+
   end
    else begin
      btnCancelar.Click;
