@@ -379,8 +379,9 @@ object MenuPrincipal: TMenuPrincipal
     end
   end
   object Timer1: TTimer
-    Interval = 10
-    Left = 64
-    Top = 68
+    Interval = 10000
+    OnTimer = Timer1Timer
+    Left = 392
+    Top = 36
   end
 end

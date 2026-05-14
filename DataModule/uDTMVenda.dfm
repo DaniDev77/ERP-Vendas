@@ -49,7 +49,7 @@ object dtmVenda: TdtmVenda
     object FDQProdutosvalor: TFMTBCDField
       DisplayLabel = 'Valor'
       FieldName = 'valor'
-      DisplayFormat = 'R$'
+      DisplayFormat = 'R$ ,0.00;-R$ ,0.00'
       Precision = 18
       Size = 5
     end

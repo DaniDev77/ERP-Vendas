@@ -32,20 +32,25 @@ implementation
 
 procedure TfrmSelecionarData.BitBtn1Click(Sender: TObject);
 begin
-   if(edtDataFinal.Date)< (edtDataInicio.Date)then begin
-     MessageDlg('Data Final não pode ser maior que a data inicio',mtInformation,[mbok],0);
-     edtDataFinal.SetFocus;
-     Abort;
-   end;
+  if Trim(edtDataInicio.Text) = '' then
+  begin
+    MessageDlg('Data Inicial é campo obrigatório.', mtWarning, [mbOK], 0);
+    Exit;
+  end;
 
-   if (edtDataFinal.Date=0) or(edtDataInicio.Date=0) then begin
-      MessageDlg('Data Inicia ou Final é campo obrigatorio',mtInformation,[mbok],0);
-     edtDataInicio.SetFocus;
-     Abort;
-   end;
+  if Trim(edtDataFinal.Text) = '' then
+  begin
+    MessageDlg('Data Final é campo obrigatório.', mtWarning, [mbOK], 0);
+    Exit;
+  end;
 
+  if edtDataFinal.Date < edtDataInicio.Date then
+  begin
+    MessageDlg('Data Final não pode ser menor que a Data Inicial.', mtWarning, [mbOK], 0);
+    Exit;
+  end;
 
-   Close;
+  ModalResult := mrOk;
 end;
 
 procedure TfrmSelecionarData.FormShow(Sender: TObject);

@@ -159,17 +159,23 @@ object frmRelCategoria: TfrmRelCategoria
       Width = 718
       Height = 35
       BandType = btColumnHeader
-      Color = clInfoBk
+      Color = 8280101
       ParentColor = False
       Transparent = False
       object RLLabel4: TRLLabel
         Left = 3
         Top = 6
-        Width = 55
+        Width = 56
         Height = 16
         Caption = 'CODIGO'
-        Color = clInfoBk
+        Color = 8280101
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
         ParentColor = False
+        ParentFont = False
         Transparent = False
       end
       object RLLabel5: TRLLabel
@@ -178,6 +184,12 @@ object frmRelCategoria: TfrmRelCategoria
         Width = 80
         Height = 16
         Caption = 'DESCRI'#199'AO'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
         Transparent = False
       end
     end

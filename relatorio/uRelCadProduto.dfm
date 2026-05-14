@@ -177,41 +177,65 @@ object frmRelCadPRoduto: TfrmRelCadPRoduto
       Width = 718
       Height = 29
       BandType = btColumnHeader
-      Color = clInfoBk
+      Color = 8280101
       ParentColor = False
       Transparent = False
       object RLLabel4: TRLLabel
         Left = 3
         Top = 6
-        Width = 55
+        Width = 56
         Height = 16
         Caption = 'CODIGO'
-        Color = clInfoBk
+        Color = 8280101
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
         ParentColor = False
+        ParentFont = False
         Transparent = False
       end
       object RLLabel5: TRLLabel
         Left = 113
         Top = 6
-        Width = 43
+        Width = 42
         Height = 16
         Caption = 'NOME'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
         Transparent = False
       end
       object RLLabel6: TRLLabel
         Left = 489
         Top = 6
-        Width = 87
+        Width = 88
         Height = 16
         Caption = 'QUANTIDADE'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
         Transparent = False
       end
       object RLLabel7: TRLLabel
         Left = 636
         Top = 6
-        Width = 48
+        Width = 49
         Height = 16
         Caption = 'VALOR'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
         Transparent = False
       end
     end
@@ -254,7 +278,7 @@ object frmRelCadPRoduto: TfrmRelCadPRoduto
     object FDQCadProdutosvalor: TFMTBCDField
       FieldName = 'valor'
       Origin = 'valor'
-      DisplayFormat = '#0.00'
+      DisplayFormat = 'R$ ,0.00;-R$ ,0.00'
       Precision = 18
       Size = 5
     end

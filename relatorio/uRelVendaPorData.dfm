@@ -175,7 +175,7 @@ object frmRelVendaPorData: TfrmRelVendaPorData
         Width = 718
         Height = 29
         BandType = btHeader
-        Color = clInfoBk
+        Color = 8280101
         ParentColor = False
         Transparent = False
         object RLLabel4: TRLLabel
@@ -184,9 +184,9 @@ object frmRelVendaPorData: TfrmRelVendaPorData
           Width = 56
           Height = 16
           Caption = 'CODIGO'
-          Color = clInfoBk
+          Color = 8280101
           Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
+          Font.Color = clWhite
           Font.Height = -13
           Font.Name = 'Arial'
           Font.Style = [fsBold]
@@ -201,7 +201,7 @@ object frmRelVendaPorData: TfrmRelVendaPorData
           Height = 16
           Caption = 'NOME'
           Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
+          Font.Color = clWhite
           Font.Height = -13
           Font.Name = 'Arial'
           Font.Style = [fsBold]
@@ -215,7 +215,7 @@ object frmRelVendaPorData: TfrmRelVendaPorData
           Height = 16
           Caption = 'VALOR'
           Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
+          Font.Color = clWhite
           Font.Height = -13
           Font.Name = 'Arial'
           Font.Style = [fsBold]
@@ -404,6 +404,7 @@ object frmRelVendaPorData: TfrmRelVendaPorData
       FieldName = 'totalVenda'
       Origin = 'totalVenda'
       ReadOnly = True
+      DisplayFormat = 'R$ ,0.00;-R$ ,0.00'
     end
   end
 end

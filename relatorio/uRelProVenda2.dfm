@@ -552,7 +552,7 @@ object frmRelProVenda2: TfrmRelProVenda2
       FieldName = 'TotalVenda'
       Origin = 'TotalVenda'
       ReadOnly = True
-      DisplayFormat = '#0.00'
+      DisplayFormat = 'R$ ,0.00;-R$ ,0.00'
       Precision = 18
       Size = 3
     end
@@ -615,12 +615,14 @@ object frmRelProVenda2: TfrmRelProVenda2
     object FDQVendasItensvalorUnitario: TFMTBCDField
       FieldName = 'valorUnitario'
       Origin = 'valorUnitario'
+      DisplayFormat = 'R$ ,0.00;-R$ ,0.00'
       Precision = 18
       Size = 5
     end
     object FDQVendasItenstotalProduto: TFMTBCDField
       FieldName = 'totalProduto'
       Origin = 'totalProduto'
+      DisplayFormat = 'R$ ,0.00;-R$ ,0.00'
       Precision = 18
       Size = 5
     end

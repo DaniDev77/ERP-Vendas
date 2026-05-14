@@ -202,7 +202,7 @@ object frmRelCadPRodutoComGrupoCategoria: TfrmRelCadPRodutoComGrupoCategoria
         Width = 718
         Height = 29
         BandType = btHeader
-        Color = clInfoBk
+        Color = 8280101
         ParentColor = False
         Transparent = False
         object RLLabel4: TRLLabel
@@ -211,9 +211,9 @@ object frmRelCadPRodutoComGrupoCategoria: TfrmRelCadPRodutoComGrupoCategoria
           Width = 56
           Height = 16
           Caption = 'CODIGO'
-          Color = clInfoBk
+          Color = 8280101
           Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
+          Font.Color = clWhite
           Font.Height = -13
           Font.Name = 'Arial'
           Font.Style = [fsBold]
@@ -228,7 +228,7 @@ object frmRelCadPRodutoComGrupoCategoria: TfrmRelCadPRodutoComGrupoCategoria
           Height = 16
           Caption = 'NOME'
           Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
+          Font.Color = clWhite
           Font.Height = -13
           Font.Name = 'Arial'
           Font.Style = [fsBold]
@@ -242,7 +242,7 @@ object frmRelCadPRodutoComGrupoCategoria: TfrmRelCadPRodutoComGrupoCategoria
           Height = 16
           Caption = 'QUANTIDADE'
           Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
+          Font.Color = clWhite
           Font.Height = -13
           Font.Name = 'Arial'
           Font.Style = [fsBold]
@@ -256,7 +256,7 @@ object frmRelCadPRodutoComGrupoCategoria: TfrmRelCadPRodutoComGrupoCategoria
           Height = 16
           Caption = 'VALOR'
           Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
+          Font.Color = clWhite
           Font.Height = -13
           Font.Name = 'Arial'
           Font.Style = [fsBold]

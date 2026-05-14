@@ -75,6 +75,8 @@ type
     procedure HISTORICODETRANSAO1Click(Sender: TObject);
     procedure SAIR1Click(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure Timer1Timer(Sender: TObject);
+
   private
     TeclaEnter: TMREnter;
     procedure AtualizacaoBancoDados(aForm: TfrmAtualizaDB);
@@ -165,6 +167,13 @@ begin
   Self.Show;
 end;
 
+
+
+procedure TMenuPrincipal.Timer1Timer(Sender: TObject);
+begin
+ AtualizarDshBoard;
+end;
+
 procedure TMenuPrincipal.trmAtualizacaoDashBoardTimer(Sender: TObject);
 begin
   AtualizarDshBoard;
@@ -182,32 +191,41 @@ end;
 
 
 procedure TMenuPrincipal.VENDAPORDATA1Click(Sender: TObject);
+var
+  dtInicio, dtFim: TDate;
 begin
-   try
-    frmSelecionarData:=TfrmSelecionarData.Create(Self);
-    if TUsuarioLogado.TenhoAcesso(oUsuarioLogado.codigo,frmSelecionarData.Name,dtmPrincipal.dtmPrincipalDB)then
+  // BLOCO 1: Seleção de datas
+  frmSelecionarData := TfrmSelecionarData.Create(Self);
+  try
+    if not TUsuarioLogado.TenhoAcesso(oUsuarioLogado.codigo, frmSelecionarData.Name, dtmPrincipal.dtmPrincipalDB) then
     begin
-
+      MessageDlg('Usuario: ' + oUsuarioLogado.nome + ', Não tem PERMISSÃO de ACESSO', mtWarning, [mbOK], 0);
+      Exit;
+    end;
 
     frmSelecionarData.ShowModal;
 
-    frmRelVendaPorData:=TfrmRelVendaPorData.Create(Self);
+    if frmSelecionarData.ModalResult <> mrOk then
+      Exit;
+
+    // Salva datas antes de liberar o form
+    dtInicio := frmSelecionarData.edtDataInicio.Date;
+    dtFim    := frmSelecionarData.edtDataFinal.Date;
+  finally
+    FreeAndNil(frmSelecionarData);
+  end;
+
+  // BLOCO 2: Relatório (separado, sem interferência)
+  frmRelVendaPorData := TfrmRelVendaPorData.Create(Self);
+  try
     frmRelVendaPorData.FDQVenda.Close;
-    frmRelVendaPorData.FDQVenda.ParamByName('DataInicio').AsDate:=frmSelecionarData.edtDataInicio.Date ;
-    frmRelVendaPorData.FDQVenda.ParamByName('DataFim').AsDate:=frmSelecionarData.edtDataFinal.Date;
+    frmRelVendaPorData.FDQVenda.ParamByName('DataInicio').AsDate := dtInicio;
+    frmRelVendaPorData.FDQVenda.ParamByName('DataFim').AsDate    := dtFim;
     frmRelVendaPorData.FDQVenda.Open;
     frmRelVendaPorData.Relatorio.PreviewModal;
-    end
-    else
-    begin
-      MessageDlg('Usuario: '+oUsuarioLogado.nome+',NÂo te PERMISSAO de ACESSO',mtWarning,[mbOK],0)
-    end;
-   finally
-   if Assigned(frmSelecionarData) then
-       frmSelecionarData.Release;
-   if Assigned(frmRelVendaPorData) then
-    frmRelVendaPorData.Release;
-   end;
+  finally
+    FreeAndNil(frmRelVendaPorData);
+  end;
 end;
 
 procedure TMenuPrincipal.VENDAS1Click(Sender: TObject);
