@@ -52,6 +52,7 @@ type
     RLLabel11: TRLLabel;
     RLDBText9: TRLDBText;
     RLLabel12: TRLLabel;
+    RLDraw3: TRLDraw;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   private

@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uTelaHeranca, Data.DB, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.DBCtrls, Vcl.Grids, Vcl.DBGrids, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask,
-  Vcl.ExtCtrls, Vcl.ComCtrls;
+  Vcl.ExtCtrls, Vcl.ComCtrls, Vcl.Imaging.pngimage;
 
 type
   TfrmProCredito = class(TForm1)
@@ -18,6 +18,7 @@ type
     FDQListagemtipo: TStringField;
     FDQListagemdata: TSQLTimeStampField;
     FDQListagemvendaId: TIntegerField;
+    Image6: TImage;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private

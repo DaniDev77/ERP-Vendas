@@ -40,6 +40,7 @@ type
     RLLabel6: TRLLabel;
     RLLabel7: TRLLabel;
     RLBand5: TRLBand;
+    RLDraw3: TRLDraw;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   private

@@ -304,6 +304,25 @@ object frmRelVendaPorData: TfrmRelVendaPorData
           ParentFont = False
           Transparent = False
         end
+        object RLDraw4: TRLDraw
+          Left = 0
+          Top = 48
+          Width = 718
+          Height = 7
+          Align = faBottom
+          Borders.Sides = sdCustom
+          Borders.DrawLeft = False
+          Borders.DrawTop = False
+          Borders.DrawRight = False
+          Borders.DrawBottom = False
+          DrawKind = dkLine
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Pen.Width = 2
+        end
       end
     end
     object RLBand7: TRLBand

@@ -48,6 +48,7 @@ type
     RLBand7: TRLBand;
     RLDBResult2: TRLDBResult;
     RLLabel6: TRLLabel;
+    RLDraw4: TRLDraw;
     procedure FormDestroy(Sender: TObject);
   private
     { Private declarations }

@@ -2,7 +2,7 @@ object MenuPrincipal: TMenuPrincipal
   Left = 0
   Top = 0
   Caption = 'MenuPrincipal'
-  ClientHeight = 463
+  ClientHeight = 464
   ClientWidth = 919
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -20,11 +20,18 @@ object MenuPrincipal: TMenuPrincipal
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
+  object Label1: TLabel
+    Left = 32
+    Top = 440
+    Width = 97
+    Height = 13
+    Caption = 'Label1'
+  end
   object stbPricipal: TStatusBar
     Left = 0
-    Top = 444
+    Top = 440
     Width = 919
-    Height = 19
+    Height = 24
     Panels = <
       item
         Width = 150
@@ -34,18 +41,17 @@ object MenuPrincipal: TMenuPrincipal
     Left = 0
     Top = 0
     Width = 919
-    Height = 89
+    Height = 97
     Align = alTop
     Color = 8282689
     ParentBackground = False
     TabOrder = 1
     OnClick = Panel3Click
-    ExplicitTop = -5
     object Image1: TImage
-      Left = 560
-      Top = -16
-      Width = 249
-      Height = 133
+      Left = 581
+      Top = -24
+      Width = 201
+      Height = 173
       ParentShowHint = False
       Picture.Data = {
         0954506E67496D61676589504E470D0A1A0A0000000D49484452000001980000
@@ -1653,15 +1659,15 @@ object MenuPrincipal: TMenuPrincipal
         B4051618866118A62DB0C0300CC3306D810586611886690B2C300CC3304C5B60
         8161188661DA020B0CC3300CD316586018866198B6C002C3300CC3B405161886
         6118A62DFC7F85C53A417CE42FD00000000049454E44AE426082}
+      Proportional = True
       ShowHint = False
-      Stretch = True
     end
   end
   object GridPanel1: TGridPanel
     Left = 0
-    Top = 89
+    Top = 97
     Width = 919
-    Height = 355
+    Height = 343
     Align = alClient
     ColumnCollection = <
       item
@@ -1707,13 +1713,13 @@ object MenuPrincipal: TMenuPrincipal
         Value = 50.000000000000000000
       end>
     TabOrder = 2
-    ExplicitTop = 64
-    ExplicitHeight = 380
+    ExplicitTop = 89
+    ExplicitHeight = 355
     object DBChart3: TDBChart
       Left = 459
-      Top = 177
+      Top = 171
       Width = 459
-      Height = 177
+      Height = 171
       Title.Text.Strings = (
         'TOP 10 Produtos mais Vendidos ')
       Legend.TextStyle = ltsLeftPercent
@@ -1723,8 +1729,8 @@ object MenuPrincipal: TMenuPrincipal
       View3DOptions.Rotation = 360
       Align = alClient
       TabOrder = 2
-      ExplicitTop = 201
-      ExplicitHeight = 201
+      ExplicitTop = 177
+      ExplicitHeight = 177
       DefaultCanvas = 'TGDIPlusCanvas'
       ColorPaletteIndex = 15
       object PieSeries2: TPieSeries
@@ -1787,9 +1793,9 @@ object MenuPrincipal: TMenuPrincipal
     end
     object DBChart2: TDBChart
       Left = 1
-      Top = 177
+      Top = 171
       Width = 458
-      Height = 177
+      Height = 171
       Title.Text.Strings = (
         'Vendas da Ultima Semana')
       Legend.CheckBoxesStyle = cbsRadio
@@ -1799,8 +1805,8 @@ object MenuPrincipal: TMenuPrincipal
       Align = alClient
       BevelInner = bvLowered
       TabOrder = 0
-      ExplicitTop = 201
-      ExplicitHeight = 201
+      ExplicitTop = 177
+      ExplicitHeight = 177
       DefaultCanvas = 'TGDIPlusCanvas'
       ColorPaletteIndex = 13
       object Series2: TFastLineSeries
@@ -1820,13 +1826,13 @@ object MenuPrincipal: TMenuPrincipal
       Left = 1
       Top = 1
       Width = 458
-      Height = 176
+      Height = 170
       Title.Text.Strings = (
         'Produtos em Estoque')
       Chart3DPercent = 10
       Align = alClient
       TabOrder = 1
-      ExplicitHeight = 200
+      ExplicitHeight = 176
       DefaultCanvas = 'TGDIPlusCanvas'
       ColorPaletteIndex = 13
       object Series3: TBarSeries
@@ -1845,7 +1851,7 @@ object MenuPrincipal: TMenuPrincipal
       Left = 459
       Top = 1
       Width = 459
-      Height = 176
+      Height = 170
       Title.Text.Strings = (
         'Venda por Cliente')
       Chart3DPercent = 10
@@ -1855,7 +1861,9 @@ object MenuPrincipal: TMenuPrincipal
       View3DOptions.Rotation = 360
       Align = alClient
       TabOrder = 3
-      ExplicitHeight = 200
+      ExplicitLeft = 465
+      ExplicitTop = 6
+      ExplicitHeight = 166
       DefaultCanvas = 'TGDIPlusCanvas'
       ColorPaletteIndex = 15
       object Series1: TPieSeries

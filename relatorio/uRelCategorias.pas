@@ -32,6 +32,7 @@ type
     RLDBText2: TRLDBText;
     FDQCategoriascategoriaId: TFDAutoIncField;
     FDQCategoriasdescricao: TStringField;
+    RLDraw3: TRLDraw;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   private

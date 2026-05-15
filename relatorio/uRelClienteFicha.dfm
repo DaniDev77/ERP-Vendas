@@ -278,6 +278,25 @@ object frmRelClienteFicha: TfrmRelClienteFicha
         Height = 16
         Caption = 'ENDERE'#199'O'
       end
+      object RLDraw3: TRLDraw
+        Left = 0
+        Top = 114
+        Width = 718
+        Height = 6
+        Align = faBottom
+        Borders.Sides = sdCustom
+        Borders.DrawLeft = False
+        Borders.DrawTop = False
+        Borders.DrawRight = False
+        Borders.DrawBottom = False
+        DrawKind = dkLine
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        Pen.Width = 2
+      end
     end
   end
   object FDQFicha: TFDQuery

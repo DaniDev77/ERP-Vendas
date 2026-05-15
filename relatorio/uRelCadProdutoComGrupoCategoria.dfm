@@ -437,6 +437,7 @@ object frmRelCadPRodutoComGrupoCategoria: TfrmRelCadPRodutoComGrupoCategoria
       FieldName = 'valor'
       Origin = 'valor'
       ReadOnly = True
+      DisplayFormat = 'R$ ,0.00;-R$ ,0.00'
     end
     object FDQCadProdutosquantidade: TFloatField
       FieldName = 'quantidade'

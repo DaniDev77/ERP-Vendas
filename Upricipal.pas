@@ -51,6 +51,7 @@ type
     Series1: TPieSeries;
     SAIR1: TMenuItem;
     Image1: TImage;
+    Label1: TLabel;
     //trmAtualizacaoDashBoard: TTimer;
     procedure mnuuFecharClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);

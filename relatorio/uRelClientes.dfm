@@ -176,36 +176,64 @@ object frmRelClientes: TfrmRelClientes
       Top = 73
       Width = 718
       Height = 32
-      Color = clInfoBk
+      Color = 8280101
       ParentColor = False
       Transparent = False
       object RLLabel4: TRLLabel
         Left = 12
         Top = 6
-        Width = 55
+        Width = 56
         Height = 16
         Caption = 'CODIGO'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Transparent = False
       end
       object RLLabel5: TRLLabel
         Left = 116
         Top = 6
-        Width = 43
+        Width = 42
         Height = 16
         Caption = 'NOME'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Transparent = False
       end
       object RLLabel6: TRLLabel
         Left = 540
         Top = 6
-        Width = 58
+        Width = 71
         Height = 16
         Caption = 'TELEFONE'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Transparent = False
       end
       object RLLabel8: TRLLabel
         Left = 308
         Top = 6
-        Width = 43
+        Width = 44
         Height = 16
         Caption = 'EMAIL'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Transparent = False
       end
     end
   end

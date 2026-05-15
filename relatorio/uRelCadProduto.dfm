@@ -170,6 +170,25 @@ object frmRelCadPRoduto: TfrmRelCadPRoduto
         DataSource = dtsCadProdutos
         Text = ''
       end
+      object RLDraw3: TRLDraw
+        Left = 0
+        Top = 35
+        Width = 718
+        Height = 0
+        Align = faBottom
+        Borders.Sides = sdCustom
+        Borders.DrawLeft = False
+        Borders.DrawTop = False
+        Borders.DrawRight = False
+        Borders.DrawBottom = False
+        DrawKind = dkLine
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        Pen.Width = 2
+      end
     end
     object RLBand4: TRLBand
       Left = 38

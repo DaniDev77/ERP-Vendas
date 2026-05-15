@@ -17,7 +17,6 @@ uses
   uProVendas in 'processo\uProVendas.pas' {frmProVenda},
   cProVendas in 'classes\cProVendas.pas',
   cControleEstoque in 'classes\cControleEstoque.pas',
-  uRelProVenda in 'relatorio\uRelProVenda.pas' {frmrRelProVenda},
   uRelClienteFicha in 'relatorio\uRelClienteFicha.pas' {frmRelClienteFicha},
   uRelClientes in 'relatorio\uRelClientes.pas' {frmRelClientes},
   uRelCadProduto in 'relatorio\uRelCadProduto.pas' {frmRelCadPRoduto},
@@ -44,7 +43,8 @@ uses
   cCredito in 'classes\cCredito.pas',
   uProCredito in 'processo\uProCredito.pas' {frmProCredito},
   uRelVendaPorData in 'relatorio\uRelVendaPorData.pas' {frmRelVendaPorData},
-  Enter in 'terceiros\Enter.pas';
+  Enter in 'terceiros\Enter.pas',
+  uRelProVenda in 'relatorio\uRelProVenda.pas' {frmrRelProVenda};
 
 {$R *.res}
 
