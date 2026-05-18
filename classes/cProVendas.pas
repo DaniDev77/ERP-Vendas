@@ -284,18 +284,18 @@ begin
     Qry.ParamByName('dataVenda').AsDateTime := Self.F_dataVenda;
     Qry.ParamByName('totalVenda').AsFloat   := Self.F_totalVenda;
     try
-      Qry.Open;  // ? DENTRO do try
+      Qry.Open;  // DENTRO do try
       IdVendaGerado := Qry.FieldByName('vendaId').AsInteger;
       Qry.Close;
 
       // grava itens DENTRO do try
       cds.First;
       while not cds.Eof do begin
-        InserirItens(cds, IdVendaGerado); // ? DENTRO do try
+        InserirItens(cds, IdVendaGerado); //  DENTRO do try
         cds.Next;
       end;
 
-      dtmPrincipalDB.Commit; // ? Commit DENTRO do try, APÓS itens
+      dtmPrincipalDB.Commit; //  Commit DENTRO do try, APÓS itens
       Result := IdVendaGerado;
     except
       dtmPrincipalDB.Rollback;

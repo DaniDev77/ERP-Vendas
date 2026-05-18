@@ -31,18 +31,19 @@ inherited frmCadCliente: TfrmCadCliente
   inherited pgcPrincipal: TPageControl
     Width = 805
     Height = 405
-    ExplicitWidth = 763
+    ExplicitWidth = 805
     ExplicitHeight = 405
     inherited tabListagem: TTabSheet
       ExplicitLeft = 4
       ExplicitTop = 24
-      ExplicitWidth = 755
+      ExplicitWidth = 797
       ExplicitHeight = 377
       inherited pnlListagemTopo: TPanel
         Width = 797
         Height = 89
         Color = 8282689
         ParentBackground = False
+        ExplicitWidth = 797
         ExplicitHeight = 89
         inherited lblIndice: TLabel
           Width = 89
@@ -1961,7 +1962,7 @@ inherited frmCadCliente: TfrmCadCliente
       ParentDoubleBuffered = False
       ExplicitLeft = 4
       ExplicitTop = 24
-      ExplicitWidth = 755
+      ExplicitWidth = 797
       ExplicitHeight = 377
       object CEP: TLabel
         Left = 305
@@ -2182,10 +2183,10 @@ inherited frmCadCliente: TfrmCadCliente
     Top = 405
     Width = 805
     ExplicitTop = 405
-    ExplicitWidth = 763
+    ExplicitWidth = 805
     inherited btnFechar: TBitBtn
       Left = 707
-      ExplicitLeft = 665
+      ExplicitLeft = 707
     end
     inherited btnNavigator: TDBNavigator
       Hints.Strings = ()

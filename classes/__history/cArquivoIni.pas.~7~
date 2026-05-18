@@ -1,0 +1,151 @@
+unit cArquivoIni;
+
+interface
+
+uses
+  System.Classes,
+  System.SysUtils,
+  System.IniFiles,
+  Vcl.Forms;
+
+type
+  // Estrutura com os dados de conexão lidos do config.ini
+  TConfigConexao = record
+    Server:    string;
+    Database:  string;
+    Usuario:   string;
+    Senha:     string;
+    OSAuthent: Boolean; // True = autenticação Windows, False = SQL Server
+  end;
+
+  TArquivoIni = class
+  private
+    // Retorna sempre o caminho: mesma pasta do .exe, nome fixo "config.ini"
+    class function CaminhoIni: string; static;
+  public
+    // Leitura e escrita genéricas
+    class function  LerIni(const aSecao, aEntrada: string): string; static;
+    class procedure AtualizarIni(const aSecao, aEntrada, aValor: string); static;
+
+    // Lê as configurações de conexão do banco
+    class function  LerConexao: TConfigConexao; static;
+
+    // Grava as configurações de conexão no config.ini
+    class procedure SalvarConexao(const aConfig: TConfigConexao); static;
+
+    // Verifica se o config.ini existe; se não existir, cria um modelo
+    class function  GarantirIni: Boolean; static;
+
+    // Retorna True se o config.ini tem os dados mínimos preenchidos
+    class function  ConfiguracaoValida: Boolean; static;
+  end;
+
+implementation
+
+{ TArquivoIni }
+
+class function TArquivoIni.CaminhoIni: string;
+begin
+  // Sempre na mesma pasta do executável, nome fixo config.ini
+  Result := ExtractFilePath(Application.ExeName) + 'config.ini';
+end;
+
+class function TArquivoIni.LerIni(const aSecao, aEntrada: string): string;
+var
+  Ini: TIniFile;
+begin
+  Ini := TIniFile.Create(CaminhoIni);
+  try
+    Result := Ini.ReadString(aSecao, aEntrada, '');
+  finally
+    Ini.Free;
+  end;
+end;
+
+class procedure TArquivoIni.AtualizarIni(const aSecao, aEntrada, aValor: string);
+var
+  Ini: TIniFile;
+begin
+  Ini := TIniFile.Create(CaminhoIni);
+  try
+    Ini.WriteString(aSecao, aEntrada, aValor);
+  finally
+    Ini.Free;
+  end;
+end;
+
+class function TArquivoIni.LerConexao: TConfigConexao;
+var
+  Ini: TIniFile;
+begin
+  Ini := TIniFile.Create(CaminhoIni);
+  try
+    Result.Server    := Ini.ReadString ('BANCO', 'Server',    '');
+    Result.Database  := Ini.ReadString ('BANCO', 'Database',  'VENDAS');
+    Result.Usuario   := Ini.ReadString ('BANCO', 'Usuario',   '');
+    Result.Senha     := Ini.ReadString ('BANCO', 'Senha',     '');
+    Result.OSAuthent := Ini.ReadBool   ('BANCO', 'OSAuthent', False);
+  finally
+    Ini.Free;
+  end;
+end;
+
+class procedure TArquivoIni.SalvarConexao(const aConfig: TConfigConexao);
+var
+  Ini: TIniFile;
+begin
+  Ini := TIniFile.Create(CaminhoIni);
+  try
+    Ini.WriteString('BANCO', 'Server',    aConfig.Server);
+    Ini.WriteString('BANCO', 'Database',  aConfig.Database);
+    Ini.WriteString('BANCO', 'Usuario',   aConfig.Usuario);
+    Ini.WriteString('BANCO', 'Senha',     aConfig.Senha);
+    Ini.WriteBool  ('BANCO', 'OSAuthent', aConfig.OSAuthent);
+  finally
+    Ini.Free;
+  end;
+end;
+
+class function TArquivoIni.GarantirIni: Boolean;
+var
+  Ini: TIniFile;
+begin
+  Result := FileExists(CaminhoIni);
+
+  // Se não existe, cria um modelo com instruções para o usuário
+  if not Result then
+  begin
+    Ini := TIniFile.Create(CaminhoIni);
+    try
+      // Seção de instruções (comentário)
+      Ini.WriteString('INSTRUCOES', 'Passo1', 'Preencha as configuracoes na secao [BANCO]');
+      Ini.WriteString('INSTRUCOES', 'Passo2', 'Server = nome do servidor SQL Server (ex: MEUPC\SQLEXPRESS)');
+      Ini.WriteString('INSTRUCOES', 'Passo3', 'Database = nome do banco (deixe VENDAS ou mude se quiser)');
+      Ini.WriteString('INSTRUCOES', 'Passo4', 'OSAuthent = True para autenticacao Windows, False para SQL Server');
+      Ini.WriteString('INSTRUCOES', 'Passo5', 'Se OSAuthent=False, preencha Usuario e Senha');
+
+      // Seção do banco com valores padrão
+      Ini.WriteString('BANCO', 'Server',    'NOME_DO_SERVIDOR\SQLEXPRESS');
+      Ini.WriteString('BANCO', 'Database',  'VENDAS');
+      Ini.WriteString('BANCO', 'Usuario',   '');
+      Ini.WriteString('BANCO', 'Senha',     '');
+      Ini.WriteBool  ('BANCO', 'OSAuthent', False);
+    finally
+      Ini.Free;
+    end;
+    // Retorna False pois acabou de criar (ainda não configurado)
+    Result := False;
+  end;
+end;
+
+class function TArquivoIni.ConfiguracaoValida: Boolean;
+var
+  cfg: TConfigConexao;
+begin
+  cfg    := LerConexao;
+  Result := (Trim(cfg.Server)   <> '') and
+            (Trim(cfg.Server)   <> 'NOME_DO_SERVIDOR\SQLEXPRESS') and
+            (Trim(cfg.Database) <> '');
+end;
+
+end.

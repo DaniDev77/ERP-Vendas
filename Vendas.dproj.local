@@ -6,8 +6,8 @@
     <Transaction>2026/03/04 08:07:36.000.250,C:\Users\devmv\Desktop\ProjetoDelphi\Upricipal.dfm=C:\Users\devmv\Documents\Embarcadero\Studio\Projects\Unit3.dfm</Transaction>
     <Transaction>2026/03/04 08:08:20.000.815,C:\Users\devmv\Desktop\ProjetoDelphi\Vendas.dproj=C:\Users\devmv\Documents\Embarcadero\Studio\Projects\Project3.dproj</Transaction>
     <Transaction>2026/03/04 08:31:00.000.454,=C:\Users\devmv\Desktop\ProjetoDelphi\Unit1.pas</Transaction>
-    <Transaction>2026/03/04 08:32:28.000.126,C:\Users\devmv\Desktop\ProjetoDelphi\DataModule\uDTMConexao.pas=C:\Users\devmv\Desktop\ProjetoDelphi\Unit1.pas</Transaction>
     <Transaction>2026/03/04 08:32:28.000.126,C:\Users\devmv\Desktop\ProjetoDelphi\DataModule\uDTMConexao.dfm=C:\Users\devmv\Desktop\ProjetoDelphi\Unit1.dfm</Transaction>
+    <Transaction>2026/03/04 08:32:28.000.126,C:\Users\devmv\Desktop\ProjetoDelphi\DataModule\uDTMConexao.pas=C:\Users\devmv\Desktop\ProjetoDelphi\Unit1.pas</Transaction>
     <Transaction>2026/03/04 09:41:13.000.987,=C:\Users\devmv\Desktop\ProjetoDelphi\Unit1.pas</Transaction>
     <Transaction>2026/03/04 09:42:11.000.862,C:\Users\devmv\Desktop\ProjetoDelphi\Unit1.pas=C:\Users\devmv\Desktop\ProjetoDelphi\heranca\uTelaHeranca.pas</Transaction>
     <Transaction>2026/03/04 09:42:11.000.862,C:\Users\devmv\Desktop\ProjetoDelphi\Unit1.dfm=C:\Users\devmv\Desktop\ProjetoDelphi\heranca\uTelaHeranca.dfm</Transaction>
@@ -169,8 +169,8 @@
     <Transaction>2026/04/28 11:16:58.000.154,C:\Users\devmv\Desktop\ProjetoDelphi\relatorio\uRelProVenda2.dfm=C:\Users\devmv\Desktop\ProjetoDelphi\relatorio\uRelVendaPorData.dfm</Transaction>
     <Transaction>2026/04/28 11:16:58.000.154,C:\Users\devmv\Desktop\ProjetoDelphi\relatorio\uRelProVenda2.pas=C:\Users\devmv\Desktop\ProjetoDelphi\relatorio\uRelVendaPorData.pas</Transaction>
     <Transaction>2026/04/28 11:18:50.000.978,=C:\Users\devmv\Desktop\ProjetoDelphi\relatorio\uRelVendaPorData.pas</Transaction>
-    <Transaction>2026/05/15 08:12:23.924,C:\Users\devmv\Desktop\ProjetoDelphi\relatorio\uRelProVenda.pas=</Transaction>
-    <Transaction>2026/05/15 08:14:50.657,=C:\Users\devmv\Desktop\ProjetoDelphi\relatorio\uRelProVenda.pas</Transaction>
+    <Transaction>2026/05/15 08:12:23.000.924,C:\Users\devmv\Desktop\ProjetoDelphi\relatorio\uRelProVenda.pas=</Transaction>
+    <Transaction>2026/05/15 08:14:50.000.657,=C:\Users\devmv\Desktop\ProjetoDelphi\relatorio\uRelProVenda.pas</Transaction>
   </Transactions>
 	<ProjectSortOrder AutoSort="0" SortType="0">
     <File Path="cadastro"/>
@@ -204,7 +204,6 @@
     <File Path="DataModule\uDTMConexao.pas"/>
     <File Path="DataModule\uDTMConexao.dfm"/>
     <File Path="DataModule\uDTMGrafico.pas"/>
-    <File Path="DataModule\uDTMGrafico.dfm"/>
     <File Path="DataModule\uDTMVenda.pas"/>
     <File Path="DataModule\uDTMVenda.dfm"/>
     <File Path="DataModule\uFrmAtualizaDB.pas"/>

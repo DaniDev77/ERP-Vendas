@@ -163,17 +163,32 @@ end;
 
 procedure TfrmCadCliente.btnGravarClick(Sender: TObject);
 begin
- if not EmailValido(EdtEmail.Text) then
+  if not EmailValido(EdtEmail.Text) then
   begin
     ShowMessage('E-mail inválido!');
     EdtEmail.SetFocus;
     Exit;
   end;
 
-  ShowMessage('Cadastro salvo!');
-  inherited;
+  try
+    inherited;
 
+    if EstadoDoCadastro in [ecInserir, ecAlterar] then
+     // ShowMessage('Cadastro salvo com sucesso!');
+
+  except
+    on E: Exception do
+    begin
+      MessageDlg(
+        'Erro ao salvar cliente!' + #13#10 + E.Message,
+        mtError,
+        [mbOK],
+        0
+      );
+    end;
+  end;
 end;
+
 
 procedure TfrmCadCliente.btnNovoClick(Sender: TObject);
 begin
@@ -181,10 +196,6 @@ begin
   edtDataNascimento.Date:=Date;
   edtNome.SetFocus;
 end;
-
-
-
-
 
 procedure TfrmCadCliente.edtCEPExit(Sender: TObject);
 var
@@ -464,7 +475,7 @@ begin
 
   if Assigned(Column.Field) and (Column.Field.FieldName = 'statusId') then
   begin
-    // ?? LIMPA o que o pai desenhou (isso resolve!)
+    //  LIMPA o que a Herança desenhou (isso resolve!)
     grdListagem.Canvas.FillRect(Rect);
 
     case Column.Field.AsInteger of

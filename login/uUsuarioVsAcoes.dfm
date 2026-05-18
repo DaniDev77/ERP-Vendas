@@ -56,6 +56,7 @@ object frmUsuarioVsAcoes: TfrmUsuarioVsAcoes
       TitleFont.Height = -11
       TitleFont.Name = 'Tahoma'
       TitleFont.Style = [fsBold]
+      OnDrawColumnCell = grdUsuarioDrawColumnCell
     end
   end
   object Panel3: TPanel

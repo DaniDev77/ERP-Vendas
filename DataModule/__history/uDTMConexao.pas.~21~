@@ -1,0 +1,154 @@
+unit uDTMConexao;
+
+interface
+
+uses
+  System.SysUtils, System.Classes,
+  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Error,
+  FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
+  FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys,
+  FireDAC.VCLUI.Wait, Data.DB, FireDAC.Comp.Client,
+  FireDAC.Phys.MSSQL, FireDAC.Phys.MSSQLDef, FireDAC.Stan.Param,
+  FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, FireDAC.Comp.DataSet,
+  cArquivoIni, Vcl.Dialogs;
+
+type
+  TdtmPrincipal = class(TDataModule)
+    dtmPrincipalDB: TFDConnection;
+    procedure DataModuleCreate(Sender: TObject);
+  private
+    procedure ConectarViaMaster(const aServer: string);
+    procedure CriarBancoSeNecessario(const aServer, aDatabase: string);
+  public
+  end;
+
+var
+  dtmPrincipal: TdtmPrincipal;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+{$R *.dfm}
+
+procedure TdtmPrincipal.ConectarViaMaster(const aServer: string);
+var
+  cfg: TConfigConexao;
+begin
+  // Conecta ao banco "master" para poder criar o banco VENDAS caso não exista
+  cfg := TArquivoIni.LerConexao;
+
+  dtmPrincipalDB.Connected := False;
+  dtmPrincipalDB.Params.Clear;
+  dtmPrincipalDB.Params.Add('DriverID=MSSQL');
+  dtmPrincipalDB.Params.Add('Server='   + aServer);
+  dtmPrincipalDB.Params.Add('Database=master');
+
+  if cfg.OSAuthent then
+    dtmPrincipalDB.Params.Add('OSAuthent=Yes')
+  else
+  begin
+    dtmPrincipalDB.Params.Add('OSAuthent=No');
+    dtmPrincipalDB.Params.Add('User_Name=' + cfg.Usuario);
+    dtmPrincipalDB.Params.Add('Password='  + cfg.Senha);
+  end;
+
+  dtmPrincipalDB.LoginPrompt := False;
+  dtmPrincipalDB.Connected   := True;
+end;
+
+procedure TdtmPrincipal.CriarBancoSeNecessario(const aServer, aDatabase: string);
+var
+  Qry: TFDQuery;
+  existe: Boolean;
+begin
+  // Verifica no master se o banco já existe
+  Qry := TFDQuery.Create(nil);
+  try
+    Qry.Connection := dtmPrincipalDB;
+    Qry.SQL.Text   :=
+      'SELECT COUNT(*) AS Qtde FROM sys.databases WHERE name = :nome';
+    Qry.ParamByName('nome').AsString := aDatabase;
+    Qry.Open;
+    existe := Qry.FieldByName('Qtde').AsInteger > 0;
+  finally
+    FreeAndNil(Qry);
+  end;
+
+  // Se não existe, cria
+  if not existe then
+  begin
+    Qry := TFDQuery.Create(nil);
+    try
+      Qry.Connection := dtmPrincipalDB;
+      Qry.SQL.Text   := 'CREATE DATABASE [' + aDatabase + ']';
+      dtmPrincipalDB.ExecSQL('CREATE DATABASE [' + aDatabase + ']');
+    finally
+      FreeAndNil(Qry);
+    end;
+  end;
+end;
+
+procedure TdtmPrincipal.DataModuleCreate(Sender: TObject);
+var
+  cfg: TConfigConexao;
+begin
+  // 1. Garante que o config.ini existe
+  if not TArquivoIni.GarantirIni then
+  begin
+    MessageDlg(
+      'Arquivo config.ini criado na pasta do sistema.' + #13#10 +
+      'Por favor, edite-o com as informações do seu SQL Server e abra o sistema novamente.',
+      mtInformation, [mbOK], 0);
+    Halt; // Encerra o sistema para o usuário editar o arquivo
+  end;
+
+  // 2. Verifica se o config.ini tem dados válidos
+  if not TArquivoIni.ConfiguracaoValida then
+  begin
+    MessageDlg(
+      'As configurações do banco em config.ini estão incompletas.' + #13#10 +
+      'Preencha o campo "Server" com o endereço do seu SQL Server e abra novamente.',
+      mtWarning, [mbOK], 0);
+    Halt;
+  end;
+
+  // 3. Lê as configurações
+  cfg := TArquivoIni.LerConexao;
+
+  // 4. Conecta ao master para criar o banco se necessário
+  try
+    ConectarViaMaster(cfg.Server);
+    CriarBancoSeNecessario(cfg.Server, cfg.Database);
+  except
+    on E: Exception do
+    begin
+      MessageDlg(
+        'Não foi possível conectar ao SQL Server.' + #13#10 +
+        'Verifique as configurações no config.ini.' + #13#10#13#10 +
+        'Erro: ' + E.Message,
+        mtError, [mbOK], 0);
+      Halt;
+    end;
+  end;
+
+  // 5. Reconecta agora no banco correto (VENDAS)
+  dtmPrincipalDB.Connected := False;
+  dtmPrincipalDB.Params.Clear;
+  dtmPrincipalDB.Params.Add('DriverID=MSSQL');
+  dtmPrincipalDB.Params.Add('Server='   + cfg.Server);
+  dtmPrincipalDB.Params.Add('Database=' + cfg.Database);
+
+  if cfg.OSAuthent then
+    dtmPrincipalDB.Params.Add('OSAuthent=Yes')
+  else
+  begin
+    dtmPrincipalDB.Params.Add('OSAuthent=No');
+    dtmPrincipalDB.Params.Add('User_Name=' + cfg.Usuario);
+    dtmPrincipalDB.Params.Add('Password='  + cfg.Senha);
+  end;
+
+  dtmPrincipalDB.LoginPrompt := False;
+  dtmPrincipalDB.Connected   := True;
+end;
+
+end.

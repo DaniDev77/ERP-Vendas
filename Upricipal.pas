@@ -249,7 +249,7 @@ begin
    TeclaEnter.FocusColor:=clInfoBk;
 
 
-   // ?? CRIA AS AÇÕES DOS FORMS
+   //CRIA AS AÇÕES DOS FORMS
    TAcaoAcesso.CriarAcoes(TfrmCadCategorias, dtmPrincipal.dtmPrincipalDB);
    TAcaoAcesso.CriarAcoes(TfrmCadCliente, dtmPrincipal.dtmPrincipalDB);
    TAcaoAcesso.CriarAcoes(TfrmCadProduto, dtmPrincipal.dtmPrincipalDB);

@@ -34,6 +34,8 @@ type
     procedure grdAcoesDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
       State: TGridDrawState);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure grdUsuarioDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
+      State: TGridDrawState);
     private
     { Private declarations }
    // procedure SelecionarAcoesAcessoPorUsuario;
@@ -134,7 +136,22 @@ end;
 
 procedure TfrmUsuarioVsAcoes.grdAcoesDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
   State: TGridDrawState);
+var
+  Grid: TDBGrid;
 begin
+
+  Grid := Sender as TDBGrid;
+
+  //ZEBRAAAARRRRR
+  if not (gdSelected in State) then
+  begin
+    if Odd(Grid.DataSource.DataSet.RecNo) then
+      Grid.Canvas.Brush.Color := clWhite
+    else
+      Grid.Canvas.Brush.Color := $00F0F0F0; // cinza claro
+  end;
+
+  Grid.DefaultDrawColumnCell(Rect, DataCol, Column, State);
   begin
   If not FDQAcoes.FieldByName('ativo').AsBoolean  then
   begin
@@ -147,5 +164,25 @@ end;
 
 
 
+
+procedure TfrmUsuarioVsAcoes.grdUsuarioDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
+  State: TGridDrawState);
+var
+  Grid: TDBGrid;
+begin
+
+  Grid := Sender as TDBGrid;
+
+  //ZEBRAAAARRRRR
+  if not (gdSelected in State) then
+  begin
+    if Odd(Grid.DataSource.DataSet.RecNo) then
+      Grid.Canvas.Brush.Color := clWhite
+    else
+      Grid.Canvas.Brush.Color := $00F0F0F0; // cinza claro
+  end;
+
+  Grid.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+end;
 
 end.

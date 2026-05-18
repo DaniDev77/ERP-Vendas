@@ -1,0 +1,14 @@
+object dtmPrincipal: TdtmPrincipal
+  OldCreateOrder = False
+  OnCreate = DataModuleCreate
+  Height = 261
+  Width = 604
+  object dtmPrincipalDB: TFDConnection
+    Params.Strings = (
+      'DriverID=MSSQL')
+    TxOptions.EnableNested = False
+    LoginPrompt = False
+    Left = 64
+    Top = 40
+  end
+end
