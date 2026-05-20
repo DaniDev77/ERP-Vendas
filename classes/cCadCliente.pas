@@ -79,8 +79,8 @@ var
 begin
   Result := False;
 
-  if MessageDlg('Apagar cliente: ' + #13#13 + nome + '?',
-     mtConfirmation, [mbYes, mbNo], 0) = mrNo then
+  if MessageDlg('Apagar cliente: ' + nome + ' ?',
+     mtConfirmation, [mbYes, mbNo], 0)<>mrYes then
     Exit;
 
   FDQ := TFDQuery.Create(nil);
@@ -246,7 +246,8 @@ begin
   end;
 
   FDQ.Free;
-end; {$ENDREGION}
+end;
+{$ENDREGION}
 
 {$REGION 'Selecionar'}
 function TCliente.Selecionar(id: Integer): Boolean;

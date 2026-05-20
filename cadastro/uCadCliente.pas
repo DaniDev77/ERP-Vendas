@@ -173,18 +173,7 @@ begin
     Exit;
   end;
 
-  try
-    inherited;
 
-    if EstadoDoCadastro in [ecInserir, ecAlterar] then
-     // ShowMessage('Cadastro salvo com sucesso!');
-
-  except
-    on E: Exception do
-    begin
-
-    end;
-  end;
 end;
 
 
@@ -268,6 +257,7 @@ begin
   edtCpfCnpj.SelStart := Length(edtCpfCnpj.Text); // cursor no final
 end;
 
+
 procedure TfrmCadCliente.edtTelefoneKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
 var
 num: string;
@@ -286,6 +276,7 @@ begin
  edtTelefone.SelStart := Length(edtTelefone.Text);
 end;
 
+
 procedure TfrmCadCliente.lblCpfCnpjClick(Sender: TObject);
 begin
 case lkpPessoa.KeyValue of
@@ -296,6 +287,7 @@ case lkpPessoa.KeyValue of
   inherited;
 
 end;
+
 
 procedure TfrmCadCliente.lkpPessoaCloseUp(Sender: TObject);
 begin
@@ -317,19 +309,24 @@ procedure TfrmCadCliente.FDQListagemAfterScroll(DataSet: TDataSet);
 var
   saldo: Double;
 begin
+  // Só atualiza o campo de crédito se estiver no modo de visualização (consulta)
+  // Não interfere quando está editando/inserindo
+  if EstadoDoCadastro <> ecVisualizar then
+    Exit;
+
   if FDQListagem.IsEmpty then
   begin
     edtTotalCredito.Value := 0;
     Exit;
   end;
   try
-    saldo := oCredito.ObterSaldo(
-               FDQListagem.FieldByName('clienteId').AsInteger);
+    saldo := oCredito.ObterSaldo(FDQListagem.FieldByName('clienteId').AsInteger);
     edtTotalCredito.Value := saldo;
   except
     edtTotalCredito.Value := 0;
   end;
 end;
+
 
 procedure TfrmCadCliente.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
@@ -342,6 +339,7 @@ begin
   IndiceAtual:='nome';
   SalvarColunas(grdListagem);
 end;
+
 
 procedure TfrmCadCliente.FormCreate(Sender: TObject);
 begin
@@ -358,17 +356,20 @@ begin
   IndiceAtual := 'nome'
 end;
 
+
 procedure TfrmCadCliente.FormDestroy(Sender: TObject);
 begin
   oCredito.Free;
 
 end;
 
+
 procedure TfrmCadCliente.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
   if Key = VK_ESCAPE then
     Close;
 end;
+
 
 procedure TfrmCadCliente.FormShow(Sender: TObject);
 begin
@@ -379,6 +380,7 @@ begin
   CentralizarTitulosGrid(grdListagem);
   CarregarColunas(grdListagem);
 end;
+
 
 function TfrmCadCliente.Gravar(EstadoDoCadastro: TEstadoCadastro): Boolean;
 var
@@ -466,7 +468,9 @@ begin
     edtTotalCredito.Value := 0;
     CreditoOriginal       := 0;
   end;
+
 end;
+
 
 procedure TfrmCadCliente.grdListagemDrawColumnCell(Sender: TObject;
   const Rect: TRect; DataCol: Integer; Column: TColumn;

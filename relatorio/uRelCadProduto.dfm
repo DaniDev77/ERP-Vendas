@@ -131,7 +131,7 @@ object frmRelCadPRoduto: TfrmRelCadPRoduto
     end
     object RLBand1: TRLBand
       Left = 38
-      Top = 127
+      Top = 102
       Width = 718
       Height = 35
       object RLDBText1: TRLDBText
@@ -260,7 +260,7 @@ object frmRelCadPRoduto: TfrmRelCadPRoduto
     end
     object RLBand5: TRLBand
       Left = 38
-      Top = 102
+      Top = 137
       Width = 718
       Height = 25
     end

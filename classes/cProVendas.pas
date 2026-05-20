@@ -41,7 +41,7 @@ published
   end;
 implementation
 
-   {$REGION 'Create e Destroy'}
+ {$REGION 'Create e Destroy'}
 constructor TVenda.Create(aConexao: TFDConnection);
 begin
    dtmPrincipalDB:= aConexao;
@@ -52,7 +52,7 @@ begin
 end;
 {$ENDREGION}
 
-  {$REGION 'APAGAR'}
+ {$REGION ' APAGAR'}
 function TVenda.Apagar: Boolean;
 var
   FDQ: TFDQuery;
@@ -61,7 +61,7 @@ begin
 
   //confirmação
   if MessageDlg('Apagar o registro:'#13#13+
-                'Venda Nro: '+IntToStr(VendaId),
+                'Venda Numero: '+IntToStr(VendaId),
                 mtConfirmation,[mbYes, mbNo],0) <>mrYes then Exit;
 
   FDQ := TFDQuery.Create(nil);
@@ -100,7 +100,7 @@ begin
 end;
 {$ENDREGION}
 
-  {$REGION 'Atualizar'}
+ {$REGION ' Atualizar'}
  function TVenda.Atualizar(cds:TClientDataSet): Boolean;
 var FDQ: TFDQuery;
 begin
@@ -268,7 +268,7 @@ end;
 
 {$ENDREGION}
 
- {$REGION 'Inserir'}
+ {$REGION ' Inserir'}
  function TVenda.Inserir(cds: TClientDataSet): Integer;
 var Qry: TFDQuery;
     IdVendaGerado: Integer;
@@ -342,7 +342,7 @@ begin
   end;
 {$ENDREGION}
 
-  {$REGION 'Selecionar'}
+ {$REGION ' Selecionar'}
 function TVenda.Selecionar(id: Integer; var cds:TClientDataSet): Boolean;
 var FDQ: TFDQuery;
 begin
@@ -411,7 +411,7 @@ end;
 
 {$ENDREGION}
 
- {$REGION 'COntrole de Estoque'}
+ {$REGION ' COntrole de Estoque'}
  //Utilizar Update e Delete
 procedure TVenda.RetornarEstoque(sCodigo:String; Acao:TAcaoExcluirEstoque);
 var FDQ: TFDQuery;

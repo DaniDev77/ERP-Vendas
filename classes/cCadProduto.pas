@@ -69,8 +69,8 @@ var
 begin
   Result := False;
 
-  if MessageDlg('Apagar o registro: ' + #13#13 + nome + '?',
-     mtConfirmation, [mbYes, mbNo], 0) = mrNo then
+  if MessageDlg('Apagar o registro: ' + nome + ' ?',
+     mtConfirmation, [mbYes, mbNo], 0) <>mrYes then
     Exit;
 
   FDQ := TFDQuery.Create(nil);

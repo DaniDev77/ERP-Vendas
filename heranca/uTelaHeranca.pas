@@ -48,9 +48,6 @@ type
       State: TGridDrawState);
     procedure tabManutencaoContextPopup(Sender: TObject; MousePos: TPoint; var Handled: Boolean);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-   //
-
-    //procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 
   private
     { Private declarations }
@@ -64,8 +61,6 @@ type
     function ExisteCampoObrigatorio: Boolean;
     procedure DesabilitarEditPK;
     procedure LimparEdits;
-
-
 
 
   public
@@ -134,6 +129,7 @@ procedure TForm1.ExibirLabelIndice(Campo:string; aLabel:TLabel);
    begin
      aLabel.Caption:=RetornarCampoTraduzido(Campo);
    end;
+
         //FUNÇÃO CAMPO OBRIGATORIO
   function TForm1.ExisteCampoObrigatorio:Boolean;
   var i:Integer;
@@ -278,9 +274,9 @@ begin
      LimparEdits;
    FDQListagem.Refresh;
     end
-    else    begin
-      MessageDlg('Erro ao Apagar',mtError,[mbOK],0);
-    end;
+//    else    begin
+//      MessageDlg('Erro ao Apagar',mtError,[mbOK],0);
+//    end;
   finally
      EstadoDoCadastro:=ecNenhum;
   end;
@@ -335,7 +331,7 @@ begin
   end;
 end;
         {$ENDREGION}
-        
+
 {$REGION ' btn Pesquisar'}
 procedure TForm1.btnPesquisarClick(Sender: TObject);
 var
@@ -638,10 +634,6 @@ for i := 0 to ComponentCount - 1 do
 end;
 
 
-
-
-
-
 procedure TForm1.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
 
@@ -785,7 +777,6 @@ begin
   end;
 
 
-
   // Verifica se a célula atual é a que está selecionada/clicada pelo mouse
   if gdSelected in State then
   begin
@@ -897,6 +888,7 @@ begin
 end;
 {$endregion}
 
+{$REGION ' Email Valido'}
 function TForm1.EmailValido(Email: string): Boolean;
 begin
   Result := TRegEx.IsMatch(
@@ -904,5 +896,7 @@ begin
     '^[\w\.-]+@[\w\.-]+\.\w+$'
   );
 end;
+{$endregion}
+
 
 end.

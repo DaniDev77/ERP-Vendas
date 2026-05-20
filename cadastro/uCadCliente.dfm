@@ -31,6 +31,7 @@ inherited frmCadCliente: TfrmCadCliente
   inherited pgcPrincipal: TPageControl
     Width = 805
     Height = 405
+    ActivePage = tabListagem
     ExplicitWidth = 805
     ExplicitHeight = 405
     inherited tabListagem: TTabSheet
@@ -1928,12 +1929,11 @@ inherited frmCadCliente: TfrmCadCliente
           item
             Expanded = False
             FieldName = 'nome'
-            Width = 111
             Visible = True
           end
           item
             Expanded = False
-            FieldName = 'cep'
+            FieldName = 'cidade'
             Visible = True
           end
           item
@@ -1944,13 +1944,16 @@ inherited frmCadCliente: TfrmCadCliente
           item
             Expanded = False
             FieldName = 'email'
-            Width = 89
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'tipoPessoa'
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'creditoCliente'
-            Width = 104
             Visible = True
           end>
       end
@@ -2044,6 +2047,7 @@ inherited frmCadCliente: TfrmCadCliente
         TabOrder = 3
       end
       object edtCEP: TMaskEdit
+        Tag = 2
         Left = 306
         Top = 154
         Width = 266
@@ -2053,6 +2057,7 @@ inherited frmCadCliente: TfrmCadCliente
         OnExit = edtCEPExit
       end
       object edtEndereco: TLabeledEdit
+        Tag = 2
         Left = 16
         Top = 152
         Width = 266
@@ -2064,6 +2069,7 @@ inherited frmCadCliente: TfrmCadCliente
         TabOrder = 6
       end
       object edtBairro: TLabeledEdit
+        Tag = 2
         Left = 305
         Top = 192
         Width = 266
@@ -2075,6 +2081,7 @@ inherited frmCadCliente: TfrmCadCliente
         TabOrder = 9
       end
       object edtCidade: TLabeledEdit
+        Tag = 2
         Left = 16
         Top = 192
         Width = 266
@@ -2086,6 +2093,7 @@ inherited frmCadCliente: TfrmCadCliente
         TabOrder = 8
       end
       object edtTelefone: TMaskEdit
+        Tag = 2
         Left = 305
         Top = 232
         Width = 266
@@ -2095,6 +2103,7 @@ inherited frmCadCliente: TfrmCadCliente
         OnKeyUp = edtTelefoneKeyUp
       end
       object edtEmail: TLabeledEdit
+        Tag = 2
         Left = 16
         Top = 232
         Width = 266
@@ -2106,6 +2115,7 @@ inherited frmCadCliente: TfrmCadCliente
         TabOrder = 11
       end
       object edtDataNascimento: TDateEdit
+        Tag = 2
         Left = 609
         Top = 108
         Width = 120
@@ -2114,6 +2124,7 @@ inherited frmCadCliente: TfrmCadCliente
         TabOrder = 5
       end
       object lkpStatus: TDBLookupComboBox
+        Tag = 2
         Left = 225
         Top = 56
         Width = 145
@@ -2124,6 +2135,7 @@ inherited frmCadCliente: TfrmCadCliente
         TabOrder = 1
       end
       object lkpPessoa: TDBLookupComboBox
+        Tag = 2
         Left = 426
         Top = 56
         Width = 145
@@ -2135,6 +2147,7 @@ inherited frmCadCliente: TfrmCadCliente
         OnCloseUp = lkpPessoaCloseUp
       end
       object edtCpfCnpj: TMaskEdit
+        Tag = 2
         Left = 305
         Top = 108
         Width = 266
@@ -2144,6 +2157,7 @@ inherited frmCadCliente: TfrmCadCliente
         OnChange = edtCpfCnpjChange
       end
       object edtUF: TLabeledEdit
+        Tag = 2
         Left = 598
         Top = 192
         Width = 59
@@ -2155,6 +2169,7 @@ inherited frmCadCliente: TfrmCadCliente
         TabOrder = 10
       end
       object edtCredito: TCurrencyEdit
+        Tag = 2
         Left = 306
         Top = 280
         Width = 121
@@ -2163,6 +2178,7 @@ inherited frmCadCliente: TfrmCadCliente
         TabOrder = 13
       end
       object edtTotalCredito: TCurrencyEdit
+        Tag = 2
         Left = 492
         Top = 280
         Width = 81
