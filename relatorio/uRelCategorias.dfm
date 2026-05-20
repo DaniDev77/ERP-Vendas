@@ -135,8 +135,8 @@ object frmRelCategoria: TfrmRelCategoria
       Width = 718
       Height = 53
       object RLDBText1: TRLDBText
-        Left = 3
-        Top = 16
+        Left = 186
+        Top = 13
         Width = 67
         Height = 16
         DataField = 'categoriaId'
@@ -144,8 +144,8 @@ object frmRelCategoria: TfrmRelCategoria
         Text = ''
       end
       object RLDBText2: TRLDBText
-        Left = 113
-        Top = 16
+        Left = 453
+        Top = 13
         Width = 60
         Height = 16
         DataField = 'descricao'
@@ -182,8 +182,8 @@ object frmRelCategoria: TfrmRelCategoria
       ParentColor = False
       Transparent = False
       object RLLabel4: TRLLabel
-        Left = 3
-        Top = 6
+        Left = 169
+        Top = 9
         Width = 56
         Height = 16
         Caption = 'CODIGO'
@@ -198,8 +198,8 @@ object frmRelCategoria: TfrmRelCategoria
         Transparent = False
       end
       object RLLabel5: TRLLabel
-        Left = 113
-        Top = 6
+        Left = 447
+        Top = 11
         Width = 80
         Height = 16
         Caption = 'DESCRI'#199'AO'

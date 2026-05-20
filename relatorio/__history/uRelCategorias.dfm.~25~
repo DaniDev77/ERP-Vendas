@@ -1,7 +1,7 @@
 object frmRelCategoria: TfrmRelCategoria
   Left = 0
   Top = 0
-  Caption = 'frmRelCategoria'
+  Caption = 'RELATORIO DE CATEGORIAS'
   ClientHeight = 395
   ClientWidth = 798
   Color = clBtnFace
@@ -20,6 +20,7 @@ object frmRelCategoria: TfrmRelCategoria
     Top = 0
     Width = 794
     Height = 1123
+    DataSource = dtsCategoria
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -13
@@ -133,10 +134,9 @@ object frmRelCategoria: TfrmRelCategoria
       Top = 108
       Width = 718
       Height = 53
-      BandType = btColumnHeader
       object RLDBText1: TRLDBText
-        Left = 0
-        Top = 16
+        Left = 184
+        Top = 13
         Width = 67
         Height = 16
         DataField = 'categoriaId'
@@ -144,13 +144,32 @@ object frmRelCategoria: TfrmRelCategoria
         Text = ''
       end
       object RLDBText2: TRLDBText
-        Left = 113
-        Top = 16
+        Left = 457
+        Top = 13
         Width = 60
         Height = 16
         DataField = 'descricao'
         DataSource = dtsCategoria
         Text = ''
+      end
+      object RLDraw3: TRLDraw
+        Left = 0
+        Top = 47
+        Width = 718
+        Height = 6
+        Align = faBottom
+        Borders.Sides = sdCustom
+        Borders.DrawLeft = False
+        Borders.DrawTop = False
+        Borders.DrawRight = False
+        Borders.DrawBottom = False
+        DrawKind = dkLine
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        Pen.Width = 2
       end
     end
     object RLBand4: TRLBand
@@ -159,33 +178,46 @@ object frmRelCategoria: TfrmRelCategoria
       Width = 718
       Height = 35
       BandType = btColumnHeader
-      Color = clInfoBk
+      Color = 8280101
       ParentColor = False
       Transparent = False
       object RLLabel4: TRLLabel
-        Left = 3
-        Top = 6
-        Width = 55
+        Left = 194
+        Top = 9
+        Width = 56
         Height = 16
         Caption = 'CODIGO'
-        Color = clInfoBk
+        Color = 8280101
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
         ParentColor = False
+        ParentFont = False
         Transparent = False
       end
       object RLLabel5: TRLLabel
-        Left = 113
-        Top = 6
+        Left = 447
+        Top = 11
         Width = 80
         Height = 16
         Caption = 'DESCRI'#199'AO'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
         Transparent = False
       end
     end
   end
   object FDQCategorias: TFDQuery
+    Active = True
     Connection = dtmPrincipal.dtmPrincipalDB
     SQL.Strings = (
-      'Select categoriaId,'
+      'Select  categoriaId,'
       '           descricao'
       'From CATEGORIAS')
     Left = 536
@@ -204,7 +236,6 @@ object frmRelCategoria: TfrmRelCategoria
   end
   object dtsCategoria: TDataSource
     DataSet = FDQCategorias
-    OnDataChange = dtsCategoriaDataChange
     Left = 608
     Top = 248
   end

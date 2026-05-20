@@ -1,7 +1,7 @@
 object frmRelCategoria: TfrmRelCategoria
   Left = 0
   Top = 0
-  Caption = 'frmRelCategoria'
+  Caption = 'RELATORIO DE CATEGORIAS'
   ClientHeight = 395
   ClientWidth = 798
   Color = clBtnFace
@@ -20,6 +20,7 @@ object frmRelCategoria: TfrmRelCategoria
     Top = 0
     Width = 794
     Height = 1123
+    DataSource = dtsCategoria
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -13
@@ -133,9 +134,8 @@ object frmRelCategoria: TfrmRelCategoria
       Top = 108
       Width = 718
       Height = 53
-      BandType = btColumnHeader
       object RLDBText1: TRLDBText
-        Left = 0
+        Left = 3
         Top = 16
         Width = 67
         Height = 16
@@ -152,6 +152,25 @@ object frmRelCategoria: TfrmRelCategoria
         DataSource = dtsCategoria
         Text = ''
       end
+      object RLDraw3: TRLDraw
+        Left = 0
+        Top = 47
+        Width = 718
+        Height = 6
+        Align = faBottom
+        Borders.Sides = sdCustom
+        Borders.DrawLeft = False
+        Borders.DrawTop = False
+        Borders.DrawRight = False
+        Borders.DrawBottom = False
+        DrawKind = dkLine
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        Pen.Width = 2
+      end
     end
     object RLBand4: TRLBand
       Left = 38
@@ -159,17 +178,23 @@ object frmRelCategoria: TfrmRelCategoria
       Width = 718
       Height = 35
       BandType = btColumnHeader
-      Color = clInfoBk
+      Color = 8280101
       ParentColor = False
       Transparent = False
       object RLLabel4: TRLLabel
         Left = 3
         Top = 6
-        Width = 55
+        Width = 56
         Height = 16
         Caption = 'CODIGO'
-        Color = clInfoBk
+        Color = 8280101
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
         ParentColor = False
+        ParentFont = False
         Transparent = False
       end
       object RLLabel5: TRLLabel
@@ -178,14 +203,21 @@ object frmRelCategoria: TfrmRelCategoria
         Width = 80
         Height = 16
         Caption = 'DESCRI'#199'AO'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
         Transparent = False
       end
     end
   end
   object FDQCategorias: TFDQuery
+    Active = True
     Connection = dtmPrincipal.dtmPrincipalDB
     SQL.Strings = (
-      'Select categoriaId,'
+      'Select  categoriaId,'
       '           descricao'
       'From CATEGORIAS')
     Left = 536
