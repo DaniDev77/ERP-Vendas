@@ -88,6 +88,7 @@ begin
     end;
     FDQ.Close;
 
+
     FDQ.SQL.Text := 'DELETE FROM ACAOACESSO WHERE AcaoAcessoId = :id';
     FDQ.ParamByName('id').AsInteger := codigo;
     FDQ.ExecSQL;

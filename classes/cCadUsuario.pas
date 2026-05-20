@@ -73,6 +73,7 @@ begin
     Qry.ParamByName('usuarioId').AsInteger := F_usuarioId;
 
 
+
   //implementação para apagar todas as dependencias de um usuário
     Qry.SQL.Text := 'DELETE FROM USUARIOSACAOACESSO WHERE usuarioId = :usuarioId';
     Qry.ParamByName('usuarioId').AsInteger := F_usuarioId;

@@ -102,6 +102,7 @@ begin
     end;
     FDQ.Close;
 
+
     // Sem vendas: pode apagar o crédito e depois o cliente
     FDQ.SQL.Text := 'DELETE FROM CREDITO WHERE clienteId = :id';
     FDQ.ParamByName('id').AsInteger := codigo;

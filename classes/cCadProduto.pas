@@ -92,6 +92,7 @@ begin
     end;
     FDQ.Close;
 
+
     FDQ.SQL.Text := 'DELETE FROM PRODUTOS WHERE produtoId = :id';
     FDQ.ParamByName('id').AsInteger := codigo;
     FDQ.ExecSQL;

@@ -52,42 +52,49 @@ begin
 end;
 {$ENDREGION}
 
-   {$REGION 'APAGAR'}
- function TVenda.Apagar: Boolean;
-var FDQ: TFDQuery;
+  {$REGION 'APAGAR'}
+function TVenda.Apagar: Boolean;
+var
+  FDQ: TFDQuery;
 begin
+  Result := False;
 
-if MessageDlg('Apagar o registro: '+#13+#13+
-              'Venda Nro: '+IntToStr(VendaId),mtConfirmation,[mbYes, mbNo],0)=mrNo then begin
-      Result:=False;
-      Abort;
-   end;
+  //confirmação
+  if MessageDlg('Apagar o registro:'#13#13+
+                'Venda Nro: '+IntToStr(VendaId),
+                mtConfirmation,[mbYes, mbNo],0) <>mrYes then Exit;
 
+  FDQ := TFDQuery.Create(nil);
   try
-    Result := True;
-    dtmPrincipalDB.StartTransaction;
-    FDQ := TFDQuery.Create(nil);
     FDQ.Connection := dtmPrincipalDB;
-    FDQ.SQL.Clear;
-    //Apaga os Itens Primeiro Tabela Master
-   FDQ.SQL.Add('DELETE FROM VENDASITENS '+
-                ' WHERE vendaId=:vendaId');
-    FDQ.ParamByName('vendaId').AsInteger:=VendaId;
+
+    dtmPrincipalDB.StartTransaction;
     try
+
+      //APAGA CREDITO RELACIONADO À VENDA
+      FDQ.SQL.Text := 'DELETE FROM CREDITO WHERE vendaId = :vendaId';
+      FDQ.ParamByName('vendaId').AsInteger := VendaId;
       FDQ.ExecSQL;
-      //Apaga a Tabela Master
-      FDQ.SQL.Add('DELETE FROM VENDAS '+
-                ' WHERE vendaId=:vendaId');
-      FDQ.ParamByName('vendaId').AsInteger :=VendaId;
+
+      //APAGA ITENS DA VENDA
+      FDQ.SQL.Text := 'DELETE FROM VENDASITENS WHERE vendaId = :vendaId';
       FDQ.ExecSQL;
+
+      //APAGA A VENDA
+      FDQ.SQL.Text := 'DELETE FROM VENDAS WHERE vendaId = :vendaId';
+      FDQ.ExecSQL;
+
+      //COMMIT
+      dtmPrincipalDB.Commit;
+      Result := True;
+
     except
       dtmPrincipalDB.Rollback;
-      Result := False;
+      raise;
     end;
 
   finally
-    if Assigned(FDQ) then
-      FreeAndNil(FDQ);
+    FDQ.Free;
   end;
 end;
 {$ENDREGION}
@@ -114,9 +121,8 @@ begin
 
     try
 
-      dtmPrincipalDB.StartTransaction;
+
       FDQ.ExecSQL;
-      dtmPrincipalDB.Commit;
     //Apagar itens no Banco de dados qua foram apagados na tela
       ApagaItens(cds);
 
@@ -134,8 +140,8 @@ begin
       end;
       dtmPrincipalDB.Commit;
     except
-      Result := False;
       dtmPrincipalDB.Rollback;
+       Result := False;
     end;
 
   finally
@@ -278,18 +284,18 @@ begin
     Qry.ParamByName('dataVenda').AsDateTime := Self.F_dataVenda;
     Qry.ParamByName('totalVenda').AsFloat   := Self.F_totalVenda;
     try
-      Qry.Open;  // ? DENTRO do try
+      Qry.Open;  // DENTRO do try
       IdVendaGerado := Qry.FieldByName('vendaId').AsInteger;
       Qry.Close;
 
       // grava itens DENTRO do try
       cds.First;
       while not cds.Eof do begin
-        InserirItens(cds, IdVendaGerado); // ? DENTRO do try
+        InserirItens(cds, IdVendaGerado); //  DENTRO do try
         cds.Next;
       end;
 
-      dtmPrincipalDB.Commit; // ? Commit DENTRO do try, APÓS itens
+      dtmPrincipalDB.Commit; //  Commit DENTRO do try, APÓS itens
       Result := IdVendaGerado;
     except
       dtmPrincipalDB.Rollback;
@@ -300,35 +306,39 @@ begin
       FreeAndNil(Qry);
   end;
 end;
- function TVenda.InserirItens(cds: TClientDataSet; IdVenda: Integer): Boolean;
-var FDQ: TFDQuery;
+ function TVenda.InserirItens(cds:TClientDataSet;IdVenda:Integer):Boolean;
+ var FDQ: TFDQuery;
 begin
   try
-    Result := True;
-    FDQ := TFDQuery.Create(nil);
-    FDQ.Connection := dtmPrincipalDB;
-    FDQ.SQL.Clear;
-    FDQ.SQL.Add('INSERT INTO VENDASITENS (VendaID, ProdutoID, ValorUnitario, Quantidade, TotalProduto) '+
-                'VALUES (:VendaID, :ProdutoID, :ValorUnitario, :Quantidade, :TotalProduto)');
-    FDQ.ParamByName('VendaID').AsInteger     := IdVenda;
+  Result := True;
+  FDQ := TFDQuery.Create(nil);
+  FDQ.Connection:= dtmPrincipalDB;
+  FDQ.SQL.Clear;
+  FDQ.SQL.Add('INSERT INTO VENDASITENS (VendaID,ProdutoID,ValorUnitario,Quantidade,TotalProduto)  '+
+                '             VALUES   (:VendaID,:ProdutoID,:ValorUnitario,:Quantidade,:TotalProduto ) ');
+    FDQ.ParamByName('VendaID').AsInteger   := IdVenda;
     FDQ.ParamByName('ProdutoID').AsInteger   := cds.FieldByName('produtoId').AsInteger;
     FDQ.ParamByName('ValorUnitario').AsFloat := cds.FieldByName('valorUnitario').AsFloat;
     FDQ.ParamByName('Quantidade').AsFloat    := cds.FieldByName('quantidade').AsFloat;
     FDQ.ParamByName('TotalProduto').AsFloat  := cds.FieldByName('valorTotalProduto').AsFloat;
+
     try
-      FDQ.ExecSQL; // ? sem StartTransaction/Commit aqui!
-      BaixarEstoque(cds.FieldByName('produtoId').AsInteger, cds.FieldByName('quantidade').AsFloat);
+
+
+      FDQ.ExecSQL;
+      dtmPrincipalDB.Commit;
+
+      BaixarEstoque(cds.FieldByName('produtoId').AsInteger,cds.FieldByName('quantidade').AsFloat);
     except
-      on E: Exception do begin
-        ShowMessage('Erro InserirItens: ' + E.Message); // ? temporário
-        Result := False;
-      end;
+      Result := False;
     end;
+
+
   finally
-    if Assigned(FDQ) then
+     if Assigned(FDQ) then
       FreeAndNil(FDQ);
   end;
-end;
+  end;
 {$ENDREGION}
 
   {$REGION 'Selecionar'}
