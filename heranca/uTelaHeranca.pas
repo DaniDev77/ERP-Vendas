@@ -631,7 +631,7 @@ for i := 0 to ComponentCount - 1 do
       grdListagem.DataSource:=dtslistagem;
       grdListagem.Options:=[dgTitles,dgIndicator,dgColumnResize,
       dgColLines,dgRowLines,dgTabs,
-      dgRowSelect,dgAlwaysShowSelection,dgCancelOnExit,
+      dgAlwaysShowSelection,dgCancelOnExit,
       dgTitleClick,dgTitleHotTrack]
 
 
@@ -784,14 +784,16 @@ begin
       Grid.Canvas.Brush.Color := $00F0F0F0; // cinza claro
   end;
 
+
+
   // Verifica se a célula atual é a que está selecionada/clicada pelo mouse
   if gdSelected in State then
   begin
     // Define a cor de fundo que você desejar para o campo selecionado
-    grdListagem.Canvas.Brush.Color := $00F4CE80; // Um verde bem clarinho (pode usar clYellow, clSkyBlue, etc.)
+    grdListagem.Canvas.Brush.Color := $007B5204; // Um verde bem clarinho (pode usar clYellow, clSkyBlue, etc.)
 
     // Define a cor da fonte para garantir que a leitura fique boa
-    grdListagem.Canvas.Font.Color := clBlack;
+    grdListagem.Canvas.Font.Color := clWhite;
     //grdListagem.Canvas.Font.Style := [fsBold]; // Deixa o texto em negrito ao clicar
   end;
 

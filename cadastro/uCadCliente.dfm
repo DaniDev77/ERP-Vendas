@@ -40,7 +40,6 @@ inherited frmCadCliente: TfrmCadCliente
         Width = 797
         Height = 89
         Color = 8282689
-        ParentBackground = False
         ExplicitWidth = 797
         ExplicitHeight = 89
         inherited lblIndice: TLabel

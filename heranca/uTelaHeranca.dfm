@@ -37,6 +37,8 @@ object Form1: TForm1
         Width = 791
         Height = 58
         Align = alTop
+        Color = clWhite
+        ParentBackground = False
         TabOrder = 0
         object lblIndice: TLabel
           Left = 15
@@ -108,7 +110,7 @@ object Form1: TForm1
         Font.Height = -11
         Font.Name = 'Tahoma'
         Font.Style = []
-        Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+        Options = [dgEditing, dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
         ParentFont = False
         TabOrder = 1
         TitleFont.Charset = DEFAULT_CHARSET
