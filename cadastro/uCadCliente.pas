@@ -94,6 +94,7 @@ type
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure btnGravarClick(Sender: TObject);
     procedure FDQListagemAfterScroll(DataSet: TDataSet);
+
     //procedure edtCreditoEnter(Sender: TObject);
 
 
@@ -159,6 +160,8 @@ begin
   end;
   inherited;
 end;
+
+
 
 
 procedure TfrmCadCliente.btnGravarClick(Sender: TObject);

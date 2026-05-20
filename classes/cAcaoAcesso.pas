@@ -63,35 +63,40 @@ function TAcaoAcesso.Apagar: Boolean;
 var
   FDQ: TFDQuery;
 begin
-  if MessageDlg('Apagar o registro:'#13#13 +
-    'Codigo: ' + IntToStr(F_acaoAcessoId) + #13 +
-    'Nome: ' + F_descricao,
-    mtConfirmation, [mbYes, mbNo], 0)<>mrYes then
-  begin
-    Result := False;
+  Result := False;
+
+  if MessageDlg('Apagar o registro: ' + #13#13 + descricao + '?',
+     mtConfirmation, [mbYes, mbNo], 0) <>mrYes then
     Exit;
-  end;
 
   FDQ := TFDQuery.Create(nil);
   try
     FDQ.Connection := dtmPrincipalDB;
-    FDQ.SQL.Text := 'DELETE FROM ACAOACESSO WHERE AcaoAcessoId = :id';
-    FDQ.ParamByName('id').AsInteger := F_acaoAcessoId;
 
-    dtmPrincipalDB.StartTransaction;
-    try
-      FDQ.ExecSQL;
-      dtmPrincipalDB.Commit;
-      Result := True;
-    except
-      dtmPrincipalDB.Rollback;
-      Result := False;
+    // VERIFICA se há usuários com esta ação vinculada
+    FDQ.SQL.Text := 'SELECT COUNT(*) AS Qtde FROM USUARIOSACAOACESSO WHERE AcaoAcessoId = :id';
+    FDQ.ParamByName('id').AsInteger := codigo;
+    FDQ.Open;
+    if FDQ.FieldByName('Qtde').AsInteger > 0 then
+    begin
+      MessageDlg(
+        'Não é possível apagar a ação "' + descricao + '".' + #13#10 +
+        'Ela está vinculada a ' + FDQ.FieldByName('Qtde').AsString + ' usuário(s).' + #13#10 +
+        'Remova o vínculo em "Usuários x Ações" antes de apagar.',
+        mtWarning, [mbOK], 0);
+      Exit;
     end;
+    FDQ.Close;
 
+    FDQ.SQL.Text := 'DELETE FROM ACAOACESSO WHERE AcaoAcessoId = :id';
+    FDQ.ParamByName('id').AsInteger := codigo;
+    FDQ.ExecSQL;
+    Result := True;
   finally
-    FDQ.Free;
+    FreeAndNil(FDQ);
   end;
 end;
+
 
 { ATUALIZAR }
 function TAcaoAcesso.Atualizar: Boolean;

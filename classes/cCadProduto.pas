@@ -64,37 +64,43 @@ end;
 
  {$REGION 'APAGAR'}
  function TProduto.Apagar: Boolean;
-var FDQ: TFDQuery;
+var
+  FDQ: TFDQuery;
 begin
+  Result := False;
 
-if MessageDlg('Apagar o registro: '+#13+#13+#13+
-              'Código: '+IntToStr(F_produtoId)+#13+#13+
-              'Descrição: '+F_nome,mtConfirmation,[mbYes, mbNo],0)<>mrYes then begin
-      Result:=False;
-      Abort;
-   end;
+  if MessageDlg('Apagar o registro: ' + #13#13 + nome + '?',
+     mtConfirmation, [mbYes, mbNo], 0) = mrNo then
+    Exit;
 
+  FDQ := TFDQuery.Create(nil);
   try
-    Result := True;
-    FDQ := TFDQuery.Create(nil);
     FDQ.Connection := dtmPrincipalDB;
-    FDQ.SQL.Clear;
-   FDQ.SQL.Add('DELETE FROM PRODUTOS '+
-                ' WHERE produtoId=:produtoId');
-    FDQ.ParamByName('produtoId').AsInteger := F_produtoId;
-    try
-    dtmPrincipalDB.StartTransaction;
-    FDQ.ExecSQL;
-    dtmPrincipalDB.Commit;
-    except
-      dtmPrincipalDB.Rollback;
-      Result := False;
+
+    // VERIFICA se há vendas com este produto
+    FDQ.SQL.Text := 'SELECT COUNT(*) AS Qtde FROM VENDASITENS WHERE produtoId = :id';
+    FDQ.ParamByName('id').AsInteger := codigo;
+    FDQ.Open;
+    if FDQ.FieldByName('Qtde').AsInteger > 0 then
+    begin
+      MessageDlg(
+        'Não é possível apagar o produto "' + nome + '".' + #13#10 +
+        'Ele está vinculado a ' + FDQ.FieldByName('Qtde').AsString + ' item(ns) de venda.' + #13#10 +
+        'Cancele as vendas relacionadas antes de apagar o produto.',
+        mtWarning, [mbOK], 0);
+      Exit;
     end;
+    FDQ.Close;
+
+    FDQ.SQL.Text := 'DELETE FROM PRODUTOS WHERE produtoId = :id';
+    FDQ.ParamByName('id').AsInteger := codigo;
+    FDQ.ExecSQL;
+    Result := True;
   finally
-    if Assigned(FDQ) then
-      FreeAndNil(FDQ);
+    FreeAndNil(FDQ);
   end;
 end;
+
 {$ENDREGION}
 
  {$REGION 'Atualizar'}

@@ -78,7 +78,7 @@ var FDQ: TFDQuery;
 begin
   Result := False;
 
-  if MessageDlg('Apagar cliente?', mtConfirmation, [mbYes, mbNo], 0) = mrNo then
+  if MessageDlg('Apagar cliente '+nome+'?', mtConfirmation, [mbYes, mbNo], 0) <>mrYes then
     Exit;
 
   FDQ := TFDQuery.Create(nil);
@@ -88,12 +88,12 @@ begin
     FConexao.StartTransaction;
 
     try
-      // 🔥 apaga crédito primeiro
+      // apaga crédito primeiro
       FDQ.SQL.Text := 'DELETE FROM CREDITO WHERE clienteId = :id';
       FDQ.ParamByName('id').AsInteger := Self.codigo;
       FDQ.ExecSQL;
 
-      // 🔥 depois cliente
+      //  depois cliente
       FDQ.SQL.Text := 'DELETE FROM CLIENTES WHERE clienteId = :id';
       FDQ.ParamByName('id').AsInteger := Self.codigo;
       FDQ.ExecSQL;
@@ -262,9 +262,9 @@ begin
                 '       statusId, '+
                 '       documentoId, '+
                 '       documento, '+
-                '       limiteCredito'+
-                '  FROM CLIENTES '+
-                ' WHERE clienteID=:clienteID');
+                '       limiteCredito '+
+                'FROM CLIENTES '+
+                'WHERE clienteID=:clienteID');
     FDQ.ParamByName('clienteID').AsInteger := id;
     try
       FDQ.close;
@@ -302,23 +302,28 @@ var
   limite: Double;
   oCredito: TCredito;
 begin
-  oCredito := TCredito.Create(FConexao); // CRIA
+  oCredito := TCredito.Create(FConexao);
   try
     saldo := oCredito.ObterSaldo(Self.codigo);
 
     limite := Self.limiteCredito * 1.1;
 
+    // 🔴 BLOQUEADO
     if saldo < -limite then
       Self.statusId := 2
+
+    // 🟡 ATENÇÃO
     else if saldo < 0 then
       Self.statusId := 3
-    else
+
+    // ⚪ NÃO MEXE EM PROSPECTO/INATIVO
+    else if not (Self.statusId in [4,5]) then
       Self.statusId := 1;
 
     Self.Atualizar;
 
   finally
-    oCredito.Free; // LIBERA
+    oCredito.Free;
   end;
 end;
 {$ENDREGION}
@@ -328,7 +333,8 @@ function TCliente.PodeVender: Boolean;
 begin
   // 🚫 BLOQUEADO
   if Self.statusId = 2 then
-    raise Exception.Create('Cliente BLOQUEADO!');
+    raise Exception.Create('O cliente ' +nome+ ' não pode realizar a compra por que seu Status dentro '+
+   'do sistema está BLOQUEADO ');
 
   Result := True;
 end;

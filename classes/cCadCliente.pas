@@ -74,41 +74,48 @@ end;
 
 {$REGION 'APAGAR'}
  function TCliente.Apagar: Boolean;
-var FDQ: TFDQuery;
+var
+  FDQ: TFDQuery;
 begin
   Result := False;
 
-  if MessageDlg('Apagar cliente '+nome+'?', mtConfirmation, [mbYes, mbNo], 0) <>mrYes then
+  if MessageDlg('Apagar cliente: ' + #13#13 + nome + '?',
+     mtConfirmation, [mbYes, mbNo], 0) = mrNo then
     Exit;
 
   FDQ := TFDQuery.Create(nil);
   try
     FDQ.Connection := FConexao;
 
-    FConexao.StartTransaction;
-
-    try
-      // apaga crédito primeiro
-      FDQ.SQL.Text := 'DELETE FROM CREDITO WHERE clienteId = :id';
-      FDQ.ParamByName('id').AsInteger := Self.codigo;
-      FDQ.ExecSQL;
-
-      //  depois cliente
-      FDQ.SQL.Text := 'DELETE FROM CLIENTES WHERE clienteId = :id';
-      FDQ.ParamByName('id').AsInteger := Self.codigo;
-      FDQ.ExecSQL;
-
-      FConexao.Commit;
-      Result := True;
-    except
-      FConexao.Rollback;
-      Result := False;
+    // VERIFICA se há vendas para este cliente
+    FDQ.SQL.Text := 'SELECT COUNT(*) AS Qtde FROM VENDAS WHERE clienteId = :id';
+    FDQ.ParamByName('id').AsInteger := codigo;
+    FDQ.Open;
+    if FDQ.FieldByName('Qtde').AsInteger > 0 then
+    begin
+      MessageDlg(
+        'Não é possível apagar o cliente "' + nome + '".' + #13#10 +
+        'Existem ' + FDQ.FieldByName('Qtde').AsString + ' venda(s) registrada(s) para ele.' + #13#10 +
+        'Cancele as vendas antes de apagar o cliente.',
+        mtWarning, [mbOK], 0);
+      Exit;
     end;
+    FDQ.Close;
 
+    // Sem vendas: pode apagar o crédito e depois o cliente
+    FDQ.SQL.Text := 'DELETE FROM CREDITO WHERE clienteId = :id';
+    FDQ.ParamByName('id').AsInteger := codigo;
+    FDQ.ExecSQL;
+
+    FDQ.SQL.Text := 'DELETE FROM CLIENTES WHERE clienteId = :id';
+    FDQ.ParamByName('id').AsInteger := codigo;
+    FDQ.ExecSQL;
+    Result := True;
   finally
-    FDQ.Free;
+    FreeAndNil(FDQ);
   end;
 end;
+
 {$ENDREGION}
 
 {$REGION 'Atualizar'}

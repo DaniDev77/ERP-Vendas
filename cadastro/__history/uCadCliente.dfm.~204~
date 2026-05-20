@@ -34,6 +34,8 @@ inherited frmCadCliente: TfrmCadCliente
     ExplicitWidth = 805
     ExplicitHeight = 405
     inherited tabListagem: TTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
       ExplicitWidth = 797
       ExplicitHeight = 377
       inherited pnlListagemTopo: TPanel
@@ -1958,6 +1960,8 @@ inherited frmCadCliente: TfrmCadCliente
     end
     inherited tabManutencao: TTabSheet
       ParentDoubleBuffered = False
+      ExplicitLeft = 4
+      ExplicitTop = 24
       ExplicitWidth = 797
       ExplicitHeight = 377
       object CEP: TLabel
@@ -2180,10 +2184,6 @@ inherited frmCadCliente: TfrmCadCliente
     Width = 805
     ExplicitTop = 405
     ExplicitWidth = 805
-    inherited btnApagar: TBitBtn
-      Top = 6
-      ExplicitTop = 6
-    end
     inherited btnFechar: TBitBtn
       Left = 707
       ExplicitLeft = 707
