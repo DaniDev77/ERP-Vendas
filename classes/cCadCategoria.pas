@@ -90,7 +90,7 @@ begin
 
 if MessageDlg('Apagar o registro: '+#13+#13+#13+
               'Código: '+IntToStr(F_categoriaId)+#13+#13+
-              'Descrição: '+F_descricao,mtConfirmation,[mbYes, mbNo],0)=mrNo then begin
+              'Descrição: '+F_descricao,mtConfirmation,[mbYes, mbNo],0)<>mrYes then begin
       Result:=False;
       Abort;
    end;

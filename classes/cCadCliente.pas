@@ -78,7 +78,7 @@ var FDQ: TFDQuery;
 begin
   Result := False;
 
-  if MessageDlg('Apagar cliente?', mtConfirmation, [mbYes, mbNo], 0) = mrNo then
+  if MessageDlg('Apagar cliente '+nome+'?', mtConfirmation, [mbYes, mbNo], 0) <>mrYes then
     Exit;
 
   FDQ := TFDQuery.Create(nil);

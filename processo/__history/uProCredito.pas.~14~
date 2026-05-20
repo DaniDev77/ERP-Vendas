@@ -21,6 +21,7 @@ type
     Image6: TImage;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure pgcPrincipalChange(Sender: TObject);
 
   private
     { Private declarations }

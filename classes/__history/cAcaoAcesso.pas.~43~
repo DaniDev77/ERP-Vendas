@@ -21,14 +21,16 @@ type
     F_descricao: String;
     F_chave: string;
 
-    class procedure PreencherAcoes(aForm: TForm; aConexao: TFDConnection); static;
-    class function UsuarioTemPermissao(
-      aUsuarioId: Integer; aChave: String; aConexao: TFDConnection): Boolean;
+    //class function UsuarioTemPermissao(
+     // aUsuarioId: Integer; aChave: String; aConexao: TFDConnection): Boolean;
 
   public
     constructor Create(aConexao: TFDConnection);
     destructor Destroy; override;
+      class procedure PreencherUsuariosVsAcoes(aConexao: TFDConnection); static;
+    class procedure VerificarUsuarioAcao(aUsuarioId, aAcaoAcessoId: Integer; aConexao: TFDConnection); static;
 
+    class procedure PreencherAcoes(aForm: TForm; aConexao: TFDConnection); static;
     function Inserir: Boolean;
     function Atualizar: Boolean;
     function Apagar: Boolean;
@@ -207,86 +209,36 @@ begin
   end;
 end;
 
-{ ?? PERMISSÃO }
-class function TAcaoAcesso.UsuarioTemPermissao(
-  aUsuarioId: Integer; aChave: String; aConexao: TFDConnection): Boolean;
-var
-  Qry: TFDQuery;
-  perfil: String;
-begin
-  Result := False;
-
-  Qry := TFDQuery.Create(nil);
-  try
-    Qry.Connection := aConexao;
-
-    Qry.SQL.Text :=
-      'SELECT P.nome FROM USUARIOS U ' +
-      'JOIN PERFIL P ON P.perfilId = U.perfilId ' +
-      'WHERE U.usuarioId = :usuarioId';
-
-    Qry.ParamByName('usuarioId').AsInteger := aUsuarioId;
-    Qry.Open;
-
-    if Qry.IsEmpty then Exit;
-
-    perfil := UpperCase(Trim(Qry.FieldByName('nome').AsString));
-
-    if perfil = 'ADMIN' then
-      Exit(True);
-
-    Qry.Close;
-    Qry.SQL.Text :=
-      'SELECT 1 FROM PERFILACAO PA ' +
-      'JOIN ACAOACESSO A ON A.AcaoAcessoId = PA.AcaoAcessoId ' +
-      'JOIN USUARIOS U ON U.perfilId = PA.perfilId ' +
-      'WHERE U.usuarioId = :usuarioId ' +
-      'AND A.chave = :chave ' +
-      'AND PA.ativo = 1';
-
-    Qry.ParamByName('usuarioId').AsInteger := aUsuarioId;
-    Qry.ParamByName('chave').AsString := Trim(aChave);
-    Qry.Open;
-
-    Result := not Qry.IsEmpty;
-
-  finally
-    Qry.Free;
-  end;
-end;
-
 { ?? PREENCHER AÇÕES }
 class procedure TAcaoAcesso.PreencherAcoes(aForm: TForm; aConexao: TFDConnection);
 var
   i: Integer;
   oAcao: TAcaoAcesso;
 begin
-  oAcao := TAcaoAcesso.Create(aConexao);
   try
+    oAcao:=TAcaoAcesso.Create(aConexao);
     oAcao.descricao := aForm.Caption;
-    oAcao.chave := aForm.ClassName;
+    oAcao.Chave := aForm.Name;
+    if not oAcao.ChaveExiste(oAcao.Chave) then
+       oAcao.Inserir;
 
-    if not oAcao.ChaveExiste(oAcao.chave) then
-      oAcao.Inserir;
-
-    for i := 0 to aForm.ComponentCount - 1 do
+    for I := 0 to aForm.ComponentCount -1 do
     begin
-      if (aForm.Components[i] is TBitBtn) and
-         (TBitBtn(aForm.Components[i]).Tag = 99) then
+      if (aForm.Components[i] is TBitBtn) then
       begin
-        oAcao.descricao :=
-          'BOTÃO ' + StringReplace(TBitBtn(aForm.Components[i]).Caption, '&', '', [rfReplaceAll]);
-
-        oAcao.chave :=
-          aForm.ClassName + '_' + TBitBtn(aForm.Components[i]).Name;
-
-        if not oAcao.ChaveExiste(oAcao.chave) then
-          oAcao.Inserir;
+        if TBitBtn(aForm.Components[i]).Tag=99 then
+        begin
+          oAcao.descricao := '    - BOT O '+ StringReplace(TBitBtn(aForm.Components[i]).Caption, '&','',[rfReplaceAll]);
+          oAcao.Chave     := aForm.Name+'_'+TBitBtn(aForm.Components[i]).Name;
+          if not oAcao.ChaveExiste(oAcao.Chave) then
+             oAcao.Inserir;
+        end;
       end;
     end;
 
   finally
-    oAcao.Free;
+    if Assigned(oAcao) then
+       FreeAndNil(oAcao);
   end;
 end;
 
@@ -295,13 +247,95 @@ class procedure TAcaoAcesso.CriarAcoes(aNomeForm: TFormClass; aConexao: TFDConne
 var
   form: TForm;
 begin
-  form := nil;
   try
-    form := aNomeForm.Create(nil);
+    form := aNomeForm.Create(Application);
     PreencherAcoes(form, aConexao);
   finally
-    FreeAndNil(form);
+  if Assigned(form) then
+    form.Release;
   end;
 end;
 
-end.-
+
+class procedure TAcaoAcesso.VerificarUsuarioAcao(aUsuarioId:Integer; aAcaoAcessoId:Integer; aConexao:TFDConnection);
+var Qry:TFDQuery;
+begin
+  try
+    Qry:=TFDQuery.Create(nil);
+    Qry.Connection:=aConexao;
+    Qry.SQL.Clear;
+    Qry.SQL.Add('SELECT usuarioId '+
+                '  FROM usuariosAcaoAcesso '+
+                ' WHERE usuarioId=:usuarioId '+
+                '   AND acaoAcessoId=:acaoAcessoId ');
+    Qry.ParamByName('usuarioId').AsInteger:=aUsuarioId;
+    Qry.ParamByName('acaoAcessoId').AsInteger:=aAcaoAcessoId;
+    Qry.Open;
+
+    if Qry.IsEmpty then
+    begin
+       Qry.Close;
+       Qry.SQL.Clear;
+       Qry.SQL.Add('INSERT INTO usuariosAcaoAcesso (usuarioId, acaoAcessoId, ativo) '+
+                   '     VALUES (:usuarioId, :acaoAcessoId, :ativo) ');
+       Qry.ParamByName('usuarioId').AsInteger:=aUsuarioId;
+       Qry.ParamByName('acaoAcessoId').AsInteger:=aAcaoAcessoId;
+       Qry.ParamByName('ativo').AsBoolean:=true;
+       Try
+         aConexao.StartTransaction;
+         Qry.ExecSQL;
+         aConexao.Commit;
+       Except
+         aConexao.Rollback;
+       End;
+    end;
+
+  finally
+    if Assigned(Qry) then
+       FreeAndNil(Qry);
+  end;
+
+end;
+
+
+
+
+class procedure TAcaoAcesso.PreencherUsuariosVsAcoes(aConexao:TFDConnection);
+var Qry:TFDQuery;
+    QryAcaoAcesso:TFDQuery;
+begin
+  try
+    Qry:=TFDQuery.Create(nil);
+    Qry.Connection:=aConexao;
+    Qry.SQL.Clear;
+
+    QryAcaoAcesso:=TFDQuery.Create(nil);
+    QryAcaoAcesso.Connection:=aConexao;
+    QryAcaoAcesso.SQL.Clear;
+
+    Qry.SQL.Add('SELECT usuarioId FROM usuarios ');
+    Qry.Open;
+
+    QryAcaoAcesso.SQL.Add('SELECT acaoAcessoId FROM acaoAcesso ');
+    QryAcaoAcesso.Open;
+
+    while not Qry.Eof do
+    begin
+      QryAcaoAcesso.First;
+
+      while not QryAcaoAcesso.Eof do
+      begin
+        VerificarUsuarioAcao(Qry.FieldByName('usuarioId').AsInteger, QryAcaoAcesso.FieldByName('acaoAcessoId').AsInteger, aConexao);
+        QryAcaoAcesso.Next;
+      end;
+
+      Qry.Next;
+    end;
+  finally
+    if Assigned(Qry) then
+       FreeAndNil(Qry);
+  end;
+end;
+
+
+end.

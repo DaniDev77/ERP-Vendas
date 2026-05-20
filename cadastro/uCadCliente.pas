@@ -179,12 +179,7 @@ begin
   except
     on E: Exception do
     begin
-      MessageDlg(
-        'Erro ao salvar cliente!' + #13#10 + E.Message,
-        mtError,
-        [mbOK],
-        0
-      );
+
     end;
   end;
 end;
@@ -425,6 +420,13 @@ begin
       lkpStatus.SetFocus;
       Result := False;
       Exit;
+
+       MessageDlg(
+        'Erro ao salvar cliente!' + #13#10 ,
+        mtError,
+        [mbOK],
+        0
+      );
     end;
   end;
 

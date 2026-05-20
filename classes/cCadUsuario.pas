@@ -58,7 +58,7 @@ var Qry:TFDQuery;
 begin
   if MessageDlg('Apagar o Registro: ' + #13+#13 + // quebrou a linha e pulou a linha
                 'Código: ' + IntToStr(F_usuarioId) + #13 +
-                'Nome: ' + F_nome, mtConfirmation, [mbYes, mbNo], 0) = mrNo then begin  // da um clique no sim e no não, se clicar não ele retorna como falso
+                'Nome: ' + F_nome, mtConfirmation, [mbYes, mbNo], 0) <>mrYes   then begin  // da um clique no sim e no não, se clicar não ele retorna como falso
     Result := False;
     Exit;
   end;

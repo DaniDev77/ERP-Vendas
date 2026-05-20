@@ -7,15 +7,21 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uTelaHeranca, Data.DB, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.DBCtrls, Vcl.Grids, Vcl.DBGrids, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask,
-  Vcl.ExtCtrls, Vcl.ComCtrls;
+  Vcl.ExtCtrls, Vcl.ComCtrls, Vcl.Imaging.pngimage;
 
 type
   TfrmProCredito = class(TForm1)
-    FDQListagemclienteId: TFDAutoIncField;
+    FDQListagemcreditoId: TFDAutoIncField;
+    FDQListagemclienteId: TIntegerField;
     FDQListagemnome: TStringField;
-    FDQListagemsaldo: TFMTBCDField;
+    FDQListagemcredito: TFMTBCDField;
     FDQListagemtipo: TStringField;
-    FDQListagemdataUltimaMovimentacao: TSQLTimeStampField;
+    FDQListagemdata: TSQLTimeStampField;
+    FDQListagemvendaId: TIntegerField;
+    Image6: TImage;
+    procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure pgcPrincipalChange(Sender: TObject);
   private
     { Private declarations }
   public
@@ -28,5 +34,20 @@ var
 implementation
 
 {$R *.dfm}
+
+procedure TfrmProCredito.FormCreate(Sender: TObject);
+begin
+ IndiceAtual :='nome';
+end;
+
+procedure TfrmProCredito.FormShow(Sender: TObject);
+begin
+  inherited;
+  CentralizarDadosGrid(grdListagem);
+  CentralizarTitulosGrid(grdListagem);
+  CarregarColunas(grdListagem);
+end;
+
+
 
 end.

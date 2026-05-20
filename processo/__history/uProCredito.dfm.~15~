@@ -3,9 +3,14 @@ inherited frmProCredito: TfrmProCredito
   PixelsPerInch = 96
   TextHeight = 13
   inherited pgcPrincipal: TPageControl
+    ActivePage = tabManutencao
     ExplicitLeft = -8
     ExplicitTop = 80
     inherited tabListagem: TTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 791
+      ExplicitHeight = 308
       inherited pnlListagemTopo: TPanel
         Height = 89
         Color = 8282689
@@ -1642,6 +1647,12 @@ inherited frmProCredito: TfrmProCredito
         Top = 89
         Height = 219
       end
+    end
+    inherited tabManutencao: TTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 791
+      ExplicitHeight = 308
     end
   end
   inherited pnlRodape: TPanel

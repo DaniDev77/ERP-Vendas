@@ -66,7 +66,7 @@ begin
   if MessageDlg('Apagar o registro:'#13#13 +
     'Codigo: ' + IntToStr(F_acaoAcessoId) + #13 +
     'Nome: ' + F_descricao,
-    mtConfirmation, [mbYes, mbNo], 0) = mrNo then
+    mtConfirmation, [mbYes, mbNo], 0)<>mrYes then
   begin
     Result := False;
     Exit;

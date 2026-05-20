@@ -36,7 +36,6 @@ type
     function AlterarSenha: Boolean;
 published
    property codigo           :Integer read F_usuarioId      write F_usuarioId;
-   property perfil           :Integer read F_perfilId       write F_perfilId;
    property nome             :string  read F_nome           write F_nome;
    property senha            :string  read getSenha         write setSenha;
   end;
@@ -55,39 +54,48 @@ end;
 
 {$REGION 'APAGAR'}
  function TUsuario.Apagar: Boolean;
-var FDQ: TFDQuery;
+var Qry:TFDQuery;
 begin
-
-if MessageDlg('Apagar o registro: '+#13+#13+
-              ' Código: '+IntToStr(F_usuarioId)+#13+
-               'Nome: ' +F_nome,mtConfirmation,[mbYes, mbNo],0)=mrNo then begin
-      Result:=False;
-      Abort;
-   end;
-
+  if MessageDlg('Apagar o Registro: ' + #13+#13 + // quebrou a linha e pulou a linha
+                'Código: ' + IntToStr(F_usuarioId) + #13 +
+                'Nome: ' + F_nome, mtConfirmation, [mbYes, mbNo], 0) = mrNo then begin  // da um clique no sim e no não, se clicar não ele retorna como falso
+    Result := False;
+    Exit;
+  end;
+  // caso ele responda sim, ele vem pra esse código
   try
     Result := True;
-    FDQ := TFDQuery.Create(nil);
-    FDQ.Connection := dtmPrincipalDB;
-    FDQ.SQL.Clear;
-    //Apaga os Itens Primeiro Tabela Master
-   FDQ.SQL.Add('DELETE FROM USUARIOS '+
-                ' WHERE usuarioId=:usuarioId');
-    FDQ.ParamByName('usuarioId').AsInteger:=F_usuarioId;
-    Try
-      dtmPrincipalDB.StartTransaction;
-      FDQ.ExecSQL;
-      dtmPrincipalDB.Commit;
-    Except
-      dtmPrincipalDB.Rollback;
-      Result:=false;
-    End;
+    Qry := TFDQuery.Create(nil);
+    Qry.Connection := dtmPrincipalDB;
+    Qry.SQL.Clear;
+    Qry.SQL.Add('DELETE FROM usuarios ' +
+                'WHERE usuarioId =:usuarioId');
+    Qry.ParamByName('usuarioId').AsInteger := F_usuarioId;
+
+
+  //implementação para apagar todas as dependencias de um usuário
+    Qry.SQL.Text := 'DELETE FROM USUARIOSACAOACESSO WHERE usuarioId = :usuarioId';
+    Qry.ParamByName('usuarioId').AsInteger := F_usuarioId;
+    Qry.ExecSQL;
+
+    Qry.SQL.Text := 'DELETE FROM usuarios WHERE usuarioId = :usuarioId';
+    Qry.ExecSQL;
+
+    try
+      Qry.ExecSQL;
+    except
+      on E: Exception do
+      begin
+        Result := False;
+      end;
+    end;
 
   finally
-    if Assigned(FDQ) then
-      FreeAndNil(FDQ);
+    if Assigned(Qry) then
+      FreeAndNil(Qry);
   end;
-end;s
+end;
+
 {$ENDREGION}
 
 {$REGION 'Atualizar'}
@@ -102,27 +110,30 @@ begin
     FDQ.SQL.Text :=
       'UPDATE USUARIOS SET '+
       'nome = :nome, '+
-      'senha = :senha, '+
-      'perfilId = :perfilId '+
+      'senha = :senha '+
+    //  'perfilId = :perfilId '+
       'WHERE usuarioId = :usuarioId';
 
     FDQ.ParamByName('usuarioId').AsInteger := Self.F_usuarioId;
     FDQ.ParamByName('nome').AsString       := Self.F_nome;
     FDQ.ParamByName('senha').AsString      := Self.F_senha;
-    FDQ.ParamByName('perfilId').AsInteger  := Self.F_perfilId;
+   // FDQ.ParamByName('perfilId').AsInteger  := Self.F_perfilId;
+
+    try
 
     dtmPrincipalDB.StartTransaction;
-    try
       FDQ.ExecSQL;
       dtmPrincipalDB.Commit;
-      Result := True;
-    except
+     Except
       dtmPrincipalDB.Rollback;
-    end;
+      Result:=false;
+    End;
 
   finally
-    FDQ.Free;
+    if Assigned(FDQ) then
+       FreeAndNil(FDQ);
   end;
+
 end;
 {$ENDREGION}
 
@@ -136,12 +147,12 @@ begin
     FDQ.Connection := dtmPrincipalDB;
 
     FDQ.SQL.Text :=
-      'INSERT INTO USUARIOS (nome, senha, perfilId) '+
-      'VALUES (:nome, :senha, :perfilId)';
+      'INSERT INTO USUARIOS (nome, senha ) '+
+      'VALUES (:nome, :senha)';
 
     FDQ.ParamByName('nome').AsString      := Self.F_nome;
     FDQ.ParamByName('senha').AsString     := Self.F_senha;
-    FDQ.ParamByName('perfilId').AsInteger := Self.F_perfilId;
+    //FDQ.ParamByName('perfilId').AsInteger := Self.F_perfilId;
 
     dtmPrincipalDB.StartTransaction;
     try
@@ -160,34 +171,35 @@ end;
 
 {$REGION 'Selecionar'}
 function TUsuario.Selecionar(id: Integer): Boolean;
-var FDQ: TFDQuery;
+var Qry:TFDQuery;
 begin
-  Result := False;
-  FDQ := TFDQuery.Create(nil);
   try
-    FDQ.Connection := dtmPrincipalDB;
+    Result:=true;
+    Qry:=TFDQuery.Create(nil);
+    Qry.Connection:=dtmPrincipalDB;
+    Qry.SQL.Clear;
+    Qry.SQL.Add('SELECT usuarioId,'+
+                '       nome, '+
+                '       senha '+
+                '  FROM usuarios '+
+                ' WHERE usuarioId=:usuarioId');
+    Qry.ParamByName('usuarioId').AsInteger:=id;
+    Try
+      Qry.Open;
 
-    FDQ.SQL.Text :=
-      'SELECT usuarioId, nome, senha, perfilId '+
-      'FROM USUARIOS '+
-      'WHERE usuarioId = :usuarioId';
-
-    FDQ.ParamByName('usuarioId').AsInteger := id;
-    FDQ.Open;
-
-    if not FDQ.IsEmpty then
-    begin
-      F_usuarioId := FDQ.FieldByName('usuarioId').AsInteger;
-      F_nome      := FDQ.FieldByName('nome').AsString;
-      F_senha     := FDQ.FieldByName('senha').AsString;
-      F_perfilId  := FDQ.FieldByName('perfilId').AsInteger;
-      Result := True;
-    end;
+      Self.F_usuarioId     := Qry.FieldByName('usuarioId').AsInteger;
+      Self.F_nome          := Qry.FieldByName('nome').AsString;
+      Self.F_Senha         := Qry.FieldByName('senha').AsString;;
+    Except
+      Result:=false;
+    End;
 
   finally
-    FDQ.Free;
+    if Assigned(Qry) then
+       FreeAndNil(Qry);
   end;
 end;
+
  function TUsuario.UsuarioExiste(aUsuario:string): Boolean;
 var FDQ: TFDQuery;
 begin
@@ -238,7 +250,7 @@ begin
     Qry.Connection := dtmPrincipalDB;
 
     Qry.SQL.Text :=
-      'SELECT usuarioId, nome, senha, perfilId '+
+      'SELECT usuarioId, nome, senha '+
       'FROM USUARIOS '+
       'WHERE nome = :nome AND senha = :senha';
 
@@ -252,7 +264,7 @@ begin
       F_usuarioId := Qry.FieldByName('usuarioId').AsInteger;
       F_nome      := Qry.FieldByName('nome').AsString;
       F_senha     := Qry.FieldByName('senha').AsString;
-      F_perfilId  := Qry.FieldByName('perfilId').AsInteger;
+     // F_perfilId  := Qry.FieldByName('perfilId').AsInteger;
       Result := True;
     end;
 

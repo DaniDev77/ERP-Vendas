@@ -8,7 +8,7 @@ uses
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.DBCtrls, Vcl.Grids, Vcl.DBGrids, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask,
   Vcl.ComCtrls, Vcl.ExtCtrls,uEnum,uDTMConexao,RxToolEdit,RxCurrEdit,cUsuarioLogado,cArquivoIni,System.Math,Inifiles,
-  System.JSON, System.Net.HttpClient, System.Net.URLClient;
+  System.JSON, System.Net.HttpClient, System.Net.URLClient,System.RegularExpressions;
 
 type
   TForm1 = class(TForm)
@@ -47,6 +47,7 @@ type
     procedure grdListagemDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
       State: TGridDrawState);
     procedure tabManutencaoContextPopup(Sender: TObject; MousePos: TPoint; var Handled: Boolean);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
    //
 
     //procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -66,6 +67,7 @@ type
 
 
 
+
   public
     { Public declarations }
     IndiceAtual:string;
@@ -80,6 +82,7 @@ type
     procedure CarregarColunas(aGrid: TDBGrid);
     procedure SalvarColunas(aGrid: TDBGrid);
     function BuscarCEP(const CEP: string): TJSONObject;
+    function EmailValido(Email: string): Boolean;
   end;
 
 var
@@ -639,6 +642,13 @@ end;
 
 
 
+procedure TForm1.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+
+        if Key = VK_ESCAPE then
+            Close;
+end;
+
 procedure TForm1.FormShow(Sender: TObject);
 begin
      if (FDQListagem.SQL.Text<>EmptyStr) then begin
@@ -774,6 +784,19 @@ begin
       Grid.Canvas.Brush.Color := $00F0F0F0; // cinza claro
   end;
 
+  // Verifica se a célula atual é a que está selecionada/clicada pelo mouse
+  if gdSelected in State then
+  begin
+    // Define a cor de fundo que você desejar para o campo selecionado
+    grdListagem.Canvas.Brush.Color := $00F4CE80; // Um verde bem clarinho (pode usar clYellow, clSkyBlue, etc.)
+
+    // Define a cor da fonte para garantir que a leitura fique boa
+    grdListagem.Canvas.Font.Color := clBlack;
+    grdListagem.Canvas.Font.Style := [fsBold]; // Deixa o texto em negrito ao clicar
+  end;
+
+
+
   Grid.DefaultDrawColumnCell(Rect, DataCol, Column, State);
 end;
   {$endregion}
@@ -872,5 +895,12 @@ begin
 end;
 {$endregion}
 
+function TForm1.EmailValido(Email: string): Boolean;
+begin
+  Result := TRegEx.IsMatch(
+    Email,
+    '^[\w\.-]+@[\w\.-]+\.\w+$'
+  );
+end;
 
 end.

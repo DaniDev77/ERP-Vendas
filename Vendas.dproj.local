@@ -204,6 +204,7 @@
     <File Path="DataModule\uDTMConexao.pas"/>
     <File Path="DataModule\uDTMConexao.dfm"/>
     <File Path="DataModule\uDTMGrafico.pas"/>
+    <File Path="DataModule\uDTMGrafico.dfm"/>
     <File Path="DataModule\uDTMVenda.pas"/>
     <File Path="DataModule\uDTMVenda.dfm"/>
     <File Path="DataModule\uFrmAtualizaDB.pas"/>

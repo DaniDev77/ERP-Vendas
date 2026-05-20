@@ -88,12 +88,12 @@ begin
     FConexao.StartTransaction;
 
     try
-      // 🔥 apaga crédito primeiro
+      // apaga crédito primeiro
       FDQ.SQL.Text := 'DELETE FROM CREDITO WHERE clienteId = :id';
       FDQ.ParamByName('id').AsInteger := Self.codigo;
       FDQ.ExecSQL;
 
-      // 🔥 depois cliente
+      //  depois cliente
       FDQ.SQL.Text := 'DELETE FROM CLIENTES WHERE clienteId = :id';
       FDQ.ParamByName('id').AsInteger := Self.codigo;
       FDQ.ExecSQL;
@@ -132,7 +132,7 @@ begin
             '       dataNascimento = :dataNascimento, '+
             '       statusId       = :statusId, '+
              '      documentoId    = :documentoId, '+
-            '       documento      = :documento '+
+            '       documento      = :documento, '+
             '       limiteCredito  = :limiteCredito'+
              ' WHERE clienteID = :clienteID');
     FDQ.ParamByName('clienteID')     .AsInteger  := Self.F_clienteId;
@@ -262,9 +262,9 @@ begin
                 '       statusId, '+
                 '       documentoId, '+
                 '       documento, '+
-                '       limiteCredito'+
-                '  FROM CLIENTES '+
-                ' WHERE clienteID=:clienteID');
+                '       limiteCredito '+
+                'FROM CLIENTES '+
+                'WHERE clienteID=:clienteID');
     FDQ.ParamByName('clienteID').AsInteger := id;
     try
       FDQ.close;
@@ -302,26 +302,39 @@ var
   limite: Double;
   oCredito: TCredito;
 begin
-  saldo := oCredito.ObterSaldo(Self.codigo);
+  oCredito := TCredito.Create(FConexao);
+  try
+    saldo := oCredito.ObterSaldo(Self.codigo);
 
-  // 🔥 usa limite FIXO do cliente
-  limite := Self.limiteCredito * 1.1;
+    limite := Self.limiteCredito * 1.1;
 
-  if saldo < -limite then
-    Self.statusId := 2 // BLOQUEADO
-  else if saldo < 0 then
-    Self.statusId := 3; // ATENÇÃO
+    // 🔴 BLOQUEADO
+    if saldo < -limite then
+      Self.statusId := 2
 
-  Self.Atualizar;
+    // 🟡 ATENÇÃO
+    else if saldo < 0 then
+      Self.statusId := 3
+
+    // ⚪ NÃO MEXE EM PROSPECTO/INATIVO
+    else if not (Self.statusId in [4,5]) then
+      Self.statusId := 1;
+
+    Self.Atualizar;
+
+  finally
+    oCredito.Free;
+  end;
 end;
- {$ENDREGION}
+{$ENDREGION}
 
 {$REGION 'Pode Vender'}
 function TCliente.PodeVender: Boolean;
 begin
   // 🚫 BLOQUEADO
   if Self.statusId = 2 then
-    raise Exception.Create('Cliente BLOQUEADO!');
+    raise Exception.Create('O cliente ' +nome+ ' não pode realizar a compra por que seu Status dentro '+
+   'do sistema está BLOQUEADO ');
 
   Result := True;
 end;

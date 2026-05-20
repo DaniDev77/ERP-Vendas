@@ -8,7 +8,7 @@ uses
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.DBCtrls, Vcl.Grids, Vcl.DBGrids, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask,
   Vcl.ExtCtrls, Vcl.ComCtrls, RxToolEdit,cCadCliente,uEnum, System.ImageList, Vcl.ImgList,System.JSON,
-  System.Net.HttpClient, System.Net.URLClient, RxCurrEdit, cCredito;
+  System.Net.HttpClient, System.Net.URLClient, RxCurrEdit, cCredito, Vcl.Imaging.pngimage;
 
 type
   TfrmCadCliente = class(TForm1)
@@ -77,6 +77,7 @@ type
     FDQListagemcreditoCliente: TFMTBCDField;
     edtTotalCredito: TCurrencyEdit;
     Label12: TLabel;
+    Image6: TImage;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnNovoClick(Sender: TObject);
     procedure btnAlterarClick(Sender: TObject);
@@ -130,47 +131,59 @@ end;
 
 procedure TfrmCadCliente.btnAlterarClick(Sender: TObject);
 begin
+  if oCliente.Selecionar(FDQListagem.FieldByName('clienteID').AsInteger) then
+  begin
+    edtClienteId.Text       := IntToStr(oCliente.codigo);
+    edtNome.Text            := oCliente.nome;
+    edtCEP.Text             := oCliente.cep;
+    edtEndereco.Text        := oCliente.endereco;
+    edtBairro.Text          := oCliente.bairro;
+    edtCidade.Text          := oCliente.cidade;
+    edtUF.Text              := oCliente.estado;
+    edtTelefone.Text        := oCliente.telefone;
+    edtEmail.Text           := oCliente.email;
+    edtDataNascimento.Date  := oCliente.dataNascimento;
+    lkpStatus.KeyValue      := oCliente.statusId;
+    lkpPessoa.KeyValue      := oCliente.documentoId;
+    edtCpfCnpj.Text         := oCliente.documento;
+    edtCredito.Value        := oCliente.credito;
+    CreditoOriginal         := oCliente.credito;
 
-
- if oCliente.Selecionar(FDQListagem.FieldByName('clienteID').AsInteger) then begin
-     edtClienteId.Text       :=IntToStr(oCliente.codigo);
-     edtNome.Text            :=oCliente.nome;
-     edtCEP.Text             :=oCliente.cep;
-     edtEndereco.Text        :=oCliente.endereco;
-     edtBairro.Text          :=oCliente.bairro;
-     edtCidade.Text          :=oCliente.cidade;
-     edtUF.Text              :=oCliente.estado;
-     edtTelefone.Text        :=oCliente.telefone;
-     edtEmail.Text           :=oCliente.email;
-     edtDataNascimento.Date  :=oCliente.dataNascimento;
-     lkpStatus.KeyValue      :=oCliente.statusId;
-     lkpPessoa.KeyValue      := oCliente.documentoId;
-     edtCpfCnpj.Text         := oCliente.documento;
-     edtCredito.Value        :=oCliente.credito;
-     CreditoOriginal := oCliente.credito;
+    // CARREGAR CRÉDITO ATUAL AO ABRIR PARA EDIÇÃO
+    edtTotalCredito.Value   := oCredito.ObterSaldo(oCliente.codigo);
   end
-   else begin
-     btnCancelar.Click;
-     Abort;
-   end;
-
-   inherited;
-
+  else
+  begin
+    btnCancelar.Click;
+    Abort;
+  end;
+  inherited;
 end;
+
 
 procedure TfrmCadCliente.btnGravarClick(Sender: TObject);
 begin
- if not EmailValido(EdtEmail.Text) then
+  if not EmailValido(EdtEmail.Text) then
   begin
     ShowMessage('E-mail inválido!');
     EdtEmail.SetFocus;
     Exit;
   end;
 
-  ShowMessage('Cadastro salvo!');
-  inherited;
+  try
+    inherited;
 
+    if EstadoDoCadastro in [ecInserir, ecAlterar] then
+     // ShowMessage('Cadastro salvo com sucesso!');
+
+  except
+    on E: Exception do
+    begin
+
+    end;
+  end;
 end;
+
 
 procedure TfrmCadCliente.btnNovoClick(Sender: TObject);
 begin
@@ -178,10 +191,6 @@ begin
   edtDataNascimento.Date:=Date;
   edtNome.SetFocus;
 end;
-
-
-
-
 
 procedure TfrmCadCliente.edtCEPExit(Sender: TObject);
 var
@@ -411,6 +420,13 @@ begin
       lkpStatus.SetFocus;
       Result := False;
       Exit;
+
+       MessageDlg(
+        'Erro ao salvar cliente!' + #13#10 +
+        mtError,
+        [mbOK],
+        0
+      );
     end;
   end;
 
@@ -441,9 +457,13 @@ begin
 
     // STATUS
     oCliente.AtualizarStatus;
+
+    // LIMPA CAMPOS DE CRÉDITO MANUALMENTE (ReadOnly não é limpo pelo LimparEdits)
+    edtCredito.Value      := 0;
+    edtTotalCredito.Value := 0;
+    CreditoOriginal       := 0;
   end;
 end;
-
 
 procedure TfrmCadCliente.grdListagemDrawColumnCell(Sender: TObject;
   const Rect: TRect; DataCol: Integer; Column: TColumn;
@@ -457,7 +477,7 @@ begin
 
   if Assigned(Column.Field) and (Column.Field.FieldName = 'statusId') then
   begin
-    // ?? LIMPA o que o pai desenhou (isso resolve!)
+    //  LIMPA o que a Herança desenhou (isso resolve!)
     grdListagem.Canvas.FillRect(Rect);
 
     case Column.Field.AsInteger of

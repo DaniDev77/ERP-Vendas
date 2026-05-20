@@ -52,17 +52,17 @@ begin
 end;
 {$ENDREGION}
 
-   {$REGION 'APAGAR'}
+  {$REGION 'APAGAR'}
 function TVenda.Apagar: Boolean;
 var
   FDQ: TFDQuery;
 begin
   Result := False;
 
-  // ?? confirmação
+  //confirmação
   if MessageDlg('Apagar o registro:'#13#13+
                 'Venda Nro: '+IntToStr(VendaId),
-                mtConfirmation,[mbYes, mbNo],0) = mrNo then Exit;
+                mtConfirmation,[mbYes, mbNo],0) <>mrYes then Exit;
 
   FDQ := TFDQuery.Create(nil);
   try
