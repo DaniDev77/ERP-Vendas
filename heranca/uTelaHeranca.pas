@@ -105,6 +105,7 @@ begin
     btnAlterar.Enabled  :=Flag;
     Navegador.Enabled   :=Flag;
     pgcPrincipal.Pages[0].TabVisible:=Flag;
+    pgcPrincipal.Pages[1].TabVisible := not(Flag);  // ← NOVA: esconde manutenção no modo visualização
     btnCancelar.Enabled := not(Flag);
     btnGravar.Enabled := not(Flag);
 

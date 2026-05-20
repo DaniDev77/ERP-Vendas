@@ -26,7 +26,7 @@ object Form1: TForm1
     Top = 0
     Width = 799
     Height = 336
-    ActivePage = tabManutencao
+    ActivePage = tabListagem
     Align = alClient
     TabOrder = 1
     object tabListagem: TTabSheet
