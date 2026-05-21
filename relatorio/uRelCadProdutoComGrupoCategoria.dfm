@@ -250,8 +250,8 @@ object frmRelCadPRodutoComGrupoCategoria: TfrmRelCadPRodutoComGrupoCategoria
           Transparent = False
         end
         object RLLabel7: TRLLabel
-          Left = 650
-          Top = 6
+          Left = 641
+          Top = 7
           Width = 49
           Height = 16
           Caption = 'VALOR'
@@ -297,7 +297,7 @@ object frmRelCadPRodutoComGrupoCategoria: TfrmRelCadPRodutoComGrupoCategoria
           Text = ''
         end
         object RLDBText4: TRLDBText
-          Left = 653
+          Left = 639
           Top = 4
           Width = 30
           Height = 16

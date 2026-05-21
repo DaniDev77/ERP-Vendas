@@ -78,6 +78,10 @@ type
     edtTotalCredito: TCurrencyEdit;
     Label12: TLabel;
     Image6: TImage;
+    Label15: TLabel;
+    Label16: TLabel;
+    Label13: TLabel;
+    Label14: TLabel;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnNovoClick(Sender: TObject);
     procedure btnAlterarClick(Sender: TObject);
@@ -172,7 +176,7 @@ begin
     EdtEmail.SetFocus;
     Exit;
   end;
-
+   inherited;
 
 end;
 
@@ -312,7 +316,7 @@ begin
   // Só atualiza o campo de crédito se estiver no modo de visualização (consulta)
   // Não interfere quando está editando/inserindo
   if EstadoDoCadastro <> ecVisualizar then
-    Exit;
+   Exit;
 
   if FDQListagem.IsEmpty then
   begin

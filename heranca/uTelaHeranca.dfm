@@ -142,7 +142,7 @@ object Form1: TForm1
       41)
     object btnNovo: TBitBtn
       Tag = 99
-      Left = -7
+      Left = 5
       Top = 6
       Width = 75
       Height = 25
@@ -179,7 +179,7 @@ object Form1: TForm1
     end
     object btnAlterar: TBitBtn
       Tag = 99
-      Left = 74
+      Left = 86
       Top = 6
       Width = 75
       Height = 25
@@ -215,7 +215,7 @@ object Form1: TForm1
       OnClick = btnAlterarClick
     end
     object btnCancelar: TBitBtn
-      Left = 163
+      Left = 175
       Top = 7
       Width = 75
       Height = 25
@@ -252,7 +252,7 @@ object Form1: TForm1
     end
     object btnGravar: TBitBtn
       Tag = 99
-      Left = 244
+      Left = 256
       Top = 7
       Width = 75
       Height = 25
@@ -289,7 +289,7 @@ object Form1: TForm1
     end
     object btnApagar: TBitBtn
       Tag = 99
-      Left = 325
+      Left = 337
       Top = 7
       Width = 75
       Height = 25
@@ -325,7 +325,7 @@ object Form1: TForm1
       OnClick = btnApagarClick
     end
     object btnFechar: TBitBtn
-      Left = 701
+      Left = 713
       Top = 7
       Width = 75
       Height = 25
@@ -362,7 +362,7 @@ object Form1: TForm1
       OnClick = btnFecharClick
     end
     object btnNavigator: TDBNavigator
-      Left = 406
+      Left = 418
       Top = 6
       Width = 224
       Height = 25

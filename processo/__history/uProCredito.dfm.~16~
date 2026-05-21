@@ -3,10 +3,13 @@ inherited frmProCredito: TfrmProCredito
   PixelsPerInch = 96
   TextHeight = 13
   inherited pgcPrincipal: TPageControl
+    ExplicitLeft = -8
+    ExplicitTop = 80
     inherited tabListagem: TTabSheet
       inherited pnlListagemTopo: TPanel
         Height = 89
         Color = 8282689
+        ParentBackground = False
         ExplicitHeight = 89
         inherited lblIndice: TLabel
           Width = 89
@@ -1638,7 +1641,6 @@ inherited frmProCredito: TfrmProCredito
       inherited grdListagem: TDBGrid
         Top = 89
         Height = 219
-        OnDblClick = nil
       end
     end
   end

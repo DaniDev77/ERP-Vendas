@@ -3,15 +3,11 @@ inherited frmCadAcaoAcesso: TfrmCadAcaoAcesso
   PixelsPerInch = 96
   TextHeight = 13
   inherited pgcPrincipal: TPageControl
+    ActivePage = tabManutencao
     inherited tabListagem: TTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 791
-      ExplicitHeight = 308
       inherited pnlListagemTopo: TPanel
         Height = 89
         Color = 8282689
-        ParentBackground = False
         ExplicitHeight = 89
         inherited lblIndice: TLabel
           Width = 89
@@ -1658,10 +1654,6 @@ inherited frmCadAcaoAcesso: TfrmCadAcaoAcesso
       end
     end
     inherited tabManutencao: TTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 791
-      ExplicitHeight = 308
       object edtAcaoAcessoId: TLabeledEdit
         Tag = 1
         Left = 305

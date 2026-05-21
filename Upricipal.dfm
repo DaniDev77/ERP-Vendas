@@ -1931,6 +1931,7 @@ object MenuPrincipal: TMenuPrincipal
       end
       object SAIR1: TMenuItem
         Caption = 'SAIR'
+        ShortCut = 16454
         OnClick = SAIR1Click
       end
       object N6: TMenuItem
@@ -1938,6 +1939,7 @@ object MenuPrincipal: TMenuPrincipal
       end
       object mnuuFechar: TMenuItem
         Caption = 'FECHAR'
+        ShortCut = 120
         OnClick = mnuuFecharClick
       end
     end
@@ -1945,7 +1947,7 @@ object MenuPrincipal: TMenuPrincipal
       Caption = 'MOVIMENTA'#199'AO'
       object VENDAS1: TMenuItem
         Caption = 'VENDAS'
-        ShortCut = 120
+        ShortCut = 16470
         OnClick = VENDAS1Click
       end
       object HISTORICODETRANSAO1: TMenuItem

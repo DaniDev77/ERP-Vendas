@@ -1641,7 +1641,7 @@ object frmLogin: TfrmLogin
       Transparent = True
     end
     object Panel2: TPanel
-      Left = 326
+      Left = 331
       Top = 0
       Width = 301
       Height = 369
@@ -1650,11 +1650,11 @@ object frmLogin: TfrmLogin
       ParentBackground = False
       TabOrder = 0
       object Label1: TLabel
-        Left = 23
-        Top = 60
-        Width = 131
+        Left = 15
+        Top = 65
+        Width = 108
         Height = 23
-        Caption = #55357#56420'USU'#193'RIO:'
+        Caption = 'USU'#193'RIO:'
         Color = clBlack
         Font.Charset = ANSI_CHARSET
         Font.Color = clWhite
@@ -1665,11 +1665,11 @@ object frmLogin: TfrmLogin
         ParentFont = False
       end
       object Label2: TLabel
-        Left = 23
-        Top = 141
-        Width = 105
+        Left = 18
+        Top = 138
+        Width = 82
         Height = 23
-        Caption = #55357#56593'SENHA:'
+        Caption = 'SENHA:'
         Font.Charset = ANSI_CHARSET
         Font.Color = clWhite
         Font.Height = -19
@@ -1750,8 +1750,8 @@ object frmLogin: TfrmLogin
         OnClick = btnAcessarClick
       end
       object edtUsuario: TEdit
-        Left = 45
-        Top = 95
+        Left = 52
+        Top = 94
         Width = 201
         Height = 27
         Font.Charset = ANSI_CHARSET
@@ -1764,8 +1764,8 @@ object frmLogin: TfrmLogin
         Text = 'a'
       end
       object edtSenha: TEdit
-        Left = 45
-        Top = 172
+        Left = 52
+        Top = 167
         Width = 201
         Height = 27
         Font.Charset = DEFAULT_CHARSET
