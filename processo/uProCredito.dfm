@@ -1638,7 +1638,7 @@ inherited frmProCredito: TfrmProCredito
       inherited grdListagem: TDBGrid
         Top = 89
         Height = 219
-        OnDblClick = nil
+        ReadOnly = True
       end
     end
   end
@@ -1650,21 +1650,36 @@ inherited frmProCredito: TfrmProCredito
       Visible = False
     end
     inherited btnCancelar: TBitBtn
+      Left = 167
       Top = 6
+      Width = 86
+      Caption = '&SAIR'
       Visible = False
+      ExplicitLeft = 167
       ExplicitTop = 6
+      ExplicitWidth = 86
     end
     inherited btnGravar: TBitBtn
+      Left = 271
       Top = 6
       Visible = False
+      ExplicitLeft = 271
       ExplicitTop = 6
     end
     inherited btnApagar: TBitBtn
+      Left = 357
+      Top = 6
       Visible = False
+      ExplicitLeft = 357
+      ExplicitTop = 6
     end
     inherited btnNavigator: TDBNavigator
+      Left = 506
+      Top = 23
       Hints.Strings = ()
       Visible = False
+      ExplicitLeft = 506
+      ExplicitTop = 23
     end
   end
   inherited FDQListagem: TFDQuery

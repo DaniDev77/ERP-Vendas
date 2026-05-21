@@ -1,0 +1,80 @@
+unit uProCredito;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.DBCtrls, Vcl.Grids, Vcl.DBGrids, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask,
+  Vcl.ExtCtrls, Vcl.ComCtrls, Vcl.Imaging.pngimage, uTelaHeranca;
+
+type
+  TfrmProCredito = class(TForm1)
+    FDQListagemcreditoId: TFDAutoIncField;
+    FDQListagemclienteId: TIntegerField;
+    FDQListagemnome: TStringField;
+    FDQListagemcredito: TFMTBCDField;
+    FDQListagemtipo: TStringField;
+    FDQListagemdata: TSQLTimeStampField;
+    FDQListagemvendaId: TIntegerField;
+    Image6: TImage;
+    procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure grdListagemDblClick(Sender: TObject);
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmProCredito: TfrmProCredito;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmProCredito.FormCreate(Sender: TObject);
+begin
+ IndiceAtual :='nome';
+end;
+
+procedure TfrmProCredito.FormShow(Sender: TObject);
+begin
+  inherited;
+  CentralizarDadosGrid(grdListagem);
+  CentralizarTitulosGrid(grdListagem);
+  CarregarColunas(grdListagem);
+end;
+
+
+
+
+
+procedure TfrmProCredito.grdListagemDblClick(Sender: TObject);
+begin
+ ShowMessage(
+  '========= RELATÓRIO DE CRÉDITO =========' + #13#10 + #13#10 +
+
+  'Còdigo do Cliente: ' +
+  FDQListagem.FieldByName('clienteId').AsString + #13#10 +
+
+  'Cliente: ' +
+  FDQListagem.FieldByName('nome').AsString + #13#10 +
+
+  'Tipo da Transação: ' +
+  FDQListagem.FieldByName('tipo').AsString + #13#10 +
+
+  'Quantidade de Crèdito Movimentada: ' +
+  FDQListagem.FieldByName('credito').AsString + #13#10 +
+
+  'Data da Transiçâo: ' +
+  FDQListagem.FieldByName('data').AsString + #13#10 +
+
+  '===================================='
+);
+end;
+
+end.
