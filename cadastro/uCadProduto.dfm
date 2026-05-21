@@ -9,14 +9,10 @@ inherited frmCadProduto: TfrmCadProduto
     TabOrder = 0
     ExplicitHeight = 394
     inherited tabListagem: TTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 791
       ExplicitHeight = 366
       inherited pnlListagemTopo: TPanel
         Height = 105
         Color = 8282689
-        ParentBackground = False
         ExplicitHeight = 105
         inherited lblIndice: TLabel
           Width = 89
@@ -1689,9 +1685,6 @@ inherited frmCadProduto: TfrmCadProduto
       end
     end
     inherited tabManutencao: TTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 791
       ExplicitHeight = 366
       object DESCRICAO: TLabel
         Left = 19

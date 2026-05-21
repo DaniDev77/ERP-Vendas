@@ -48,18 +48,23 @@ begin
 
 function TfrmCadCategorias.Gravar(EstadoDoCadastro: TEstadoCadastro): Boolean;
 begin
-if edtCategoriaId.Text<>EmptyStr then
-    oCategoria.codigo:=StrToInt(edtCategoriaId.Text)
-else
-  oCategoria.codigo:=0;
+  if Trim(edtDescricao.Text) = '' then
+  begin
+    ShowMessage('Descrição obrigatória!');
+    edtDescricao.SetFocus;
+    Result := False;
+    Exit;
+  end;
 
-  oCategoria.descricao:=edtDescricao.Text;
+  if edtCategoriaId.Text <> EmptyStr then
+    oCategoria.codigo := StrToInt(edtCategoriaId.Text)
+  else
+    oCategoria.codigo := 0;
+  oCategoria.descricao := Trim(edtDescricao.Text);
 
- if (EstadoDoCadastro=ecInserir) then
-  Result:=oCategoria.Inserir
-  else if (EstadoDoCadastro=ecAlterar) then
-   result:=oCategoria.Atualizar;
-   end;
+  if EstadoDoCadastro = ecInserir then Result := oCategoria.Inserir
+  else Result := oCategoria.Atualizar;
+end;
 
 
 {$ENDREGION}

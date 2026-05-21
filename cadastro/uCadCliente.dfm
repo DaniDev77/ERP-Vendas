@@ -2076,9 +2076,9 @@ inherited frmCadCliente: TfrmCadCliente
       object Label13: TLabel
         Left = 70
         Top = 140
-        Width = 78
+        Width = 94
         Height = 11
-        Caption = '(ex: Rua Exemple )'
+        Caption = '(ex: Rua Exemple ,99 )'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clGray
         Font.Height = -9
@@ -2139,6 +2139,7 @@ inherited frmCadCliente: TfrmCadCliente
         TabOrder = 7
         Text = ''
         OnExit = edtCEPExit
+        OnKeyUp = edtCEPKeyUp
       end
       object edtEndereco: TLabeledEdit
         Tag = 2
@@ -2202,6 +2203,7 @@ inherited frmCadCliente: TfrmCadCliente
         Height = 21
         TabOrder = 12
         Text = ''
+        OnKeyPress = edtTelefoneKeyPress
         OnKeyUp = edtTelefoneKeyUp
       end
       object edtEmail: TLabeledEdit
@@ -2266,7 +2268,7 @@ inherited frmCadCliente: TfrmCadCliente
       end
       object edtUF: TLabeledEdit
         Tag = 2
-        Left = 598
+        Left = 599
         Top = 192
         Width = 59
         Height = 21
@@ -2279,7 +2281,7 @@ inherited frmCadCliente: TfrmCadCliente
         EditLabel.Font.Name = 'Tahoma'
         EditLabel.Font.Style = []
         EditLabel.ParentFont = False
-        MaxLength = 40
+        MaxLength = 2
         TabOrder = 10
       end
       object edtCredito: TCurrencyEdit

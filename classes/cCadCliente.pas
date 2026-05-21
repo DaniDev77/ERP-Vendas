@@ -322,7 +322,7 @@ begin
       Self.statusId := 2
 
     // 🟡 ATENÇÃO
-    else if saldo < 0 then
+    else if saldo = 0 then
       Self.statusId := 3
 
     // ⚪ NÃO MEXE EM PROSPECTO/INATIVO
@@ -340,10 +340,17 @@ end;
 {$REGION 'Pode Vender'}
 function TCliente.PodeVender: Boolean;
 begin
-  // 🚫 BLOQUEADO
-  if Self.statusId = 2 then
-    raise Exception.Create('O cliente ' +nome+ ' não pode realizar a compra por que seu Status dentro '+
-   'do sistema está BLOQUEADO ');
+  case Self.statusId of
+    2: raise Exception.Create(
+         'Cliente BLOQUEADO' + #13#10 +
+         'O cliente "' + nome + '" está bloqueado no sistema e não pode realizar compras.' + #13#10 +
+         'Atualize os créditos para prosseguir com a venda.');
+
+    3: raise Exception.Create(
+         'Cliente EM ATENÇÃO' + #13#10 +
+         'O cliente "' + nome + '" está com saldo zerado.' + #13#10 +
+         'É necessário adicionar crédito antes de prosseguir com a venda.');
+  end;
 
   Result := True;
 end;

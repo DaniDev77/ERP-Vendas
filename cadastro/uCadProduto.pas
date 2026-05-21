@@ -85,33 +85,33 @@ if oProduto.Selecionar(FDQListagem.FieldByName('produtoId').AsInteger) then
  end;
 end;
 
-  function TfrmCadProduto.Gravar(EstadoDoCadastro: TEstadoCadastro): Boolean;
+function TfrmCadProduto.Gravar(EstadoDoCadastro: TEstadoCadastro): Boolean;
+
+  function Vazio(const s: string): Boolean;
+  begin Result := Trim(s) = ''; end;
+
 begin
-     if edtProdutoId.Text<>EmptyStr then
-    oProduto.codigo:=StrToInt(edtProdutoId.Text)
-else
-  oProduto.codigo:=0;
+  if Vazio(edtNome.Text)        then begin ShowMessage('Nome obrigatório!');       edtNome.SetFocus;      Result:=False; Exit; end;
+  if Vazio(edtDescricao.Text)   then begin ShowMessage('Descrição obrigatória!');  edtDescricao.SetFocus; Result:=False; Exit; end;
+  if VarIsNull(lkpCategoria.KeyValue)
+                                then begin ShowMessage('Selecione a Categoria!');  lkpCategoria.SetFocus; Result:=False; Exit; end;
+  if oProduto.valor <= 0        then begin ShowMessage('Valor deve ser maior que zero!'); edtValor.SetFocus; Result:=False; Exit; end;
+  if oProduto.quantidade <= 0   then begin ShowMessage('Quantidade deve ser maior que zero!'); edtQuantidade.SetFocus; Result:=False; Exit; end;
 
-  oProduto.nome          :=edtNome.Text;
-  oProduto.descricao     :=edtDescricao.Text;
-  oProduto.categoriaId   :=lkpCategoria.KeyValue;
-  oProduto.valor         :=edtValor.Value;
-  oProduto.quantidade    :=edtQuantidade.Value;
+  if edtProdutoId.Text <> EmptyStr then
+    oProduto.codigo := StrToInt(edtProdutoId.Text)
+  else
+    oProduto.codigo := 0;
 
-
+  oProduto.nome        := Trim(edtNome.Text);
+  oProduto.descricao   := Trim(edtDescricao.Text);
+  oProduto.categoriaId := lkpCategoria.KeyValue;
+  oProduto.valor       := edtValor.Value;
+  oProduto.quantidade  := edtQuantidade.Value;
   oProduto.foto.Assign(imgImagem.Picture.Graphic);
-   // Verifica se o valor é válido antes de gravar
-  if oProduto.valor <= 0 then // ? comparação correta
-  begin
-    MessageDlg('Valor do produto deve ser maior que zero!', mtWarning, [mbOK], 0);
-    edtValor.SetFocus;
-    Abort; // ? para a gravação
-  end;
 
- if (EstadoDoCadastro=ecInserir) then
-  Result:=oProduto.Inserir
-  else if (EstadoDoCadastro=ecAlterar) then
-   result:=oProduto.Atualizar;
+  if EstadoDoCadastro = ecInserir then Result := oProduto.Inserir
+  else Result := oProduto.Atualizar;
 end;
 
 

@@ -36,30 +36,46 @@ implementation
 {$R *.dfm}
 
 procedure TfrmAlterarSenha.btnAlterarClick(Sender: TObject);
-var oUsuario:TUsuario;
+var oUsuario: TUsuario;
 begin
-  if (edtSenhaAtual.Text=oUsuarioLogado.senha)then begin
-    if (edtSenhaNova.Text=edtRepetirNovaSenha.Text)then begin
-      try
-        oUsuario:=TUsuario.Create(dtmPrincipal.dtmPrincipalDB);
-        oUsuario.codigo := oUsuario.codigo;
-        oUsuario.senha  := edtSenhaNova.Text;
-        oUsuario.AlterarSenha;
-        oUsuarioLogado.senha:=edtSenhaNova.Text;
-        MessageDlg('Senha alterada',mtInformation,[mbok],0);
-        LimparEdits;
-      finally
-        FreeAndNil(oUsuario);
-      end;
-    end
-    else begin
-      MessageDlg('Senha digitadas nao coincidem',mtInformation,[mbok],0);
-      edtSenhaNova.SetFocus
-    end;
+  if Trim(edtSenhaAtual.Text)       = '' then begin ShowMessage('Informe a senha atual!');        edtSenhaAtual.SetFocus;       Exit; end;
+  if Trim(edtSenhaNova.Text)        = '' then begin ShowMessage('Informe a nova senha!');          edtSenhaNova.SetFocus;        Exit; end;
+  if Trim(edtRepetirNovaSenha.Text) = '' then begin ShowMessage('Repita a nova senha!');           edtRepetirNovaSenha.SetFocus; Exit; end;
 
-  end
-  else begin
-      MessageDlg('Senha Atual está invalida ',mtInformation,[mbok],0);
+  if edtSenhaAtual.Text <> oUsuarioLogado.senha then
+  begin
+    MessageDlg('Senha atual incorreta!', mtWarning, [mbOK], 0);
+    edtSenhaAtual.Clear;
+    edtSenhaAtual.SetFocus;
+    Exit;
+  end;
+
+  if edtSenhaNova.Text <> edtRepetirNovaSenha.Text then
+  begin
+    MessageDlg('As senhas novas não coincidem!', mtWarning, [mbOK], 0);
+    edtSenhaNova.Clear;
+    edtRepetirNovaSenha.Clear;
+    edtSenhaNova.SetFocus;
+    Exit;
+  end;
+
+  if edtSenhaNova.Text = oUsuarioLogado.senha then
+  begin
+    MessageDlg('A nova senha deve ser diferente da atual!', mtWarning, [mbOK], 0);
+    edtSenhaNova.SetFocus;
+    Exit;
+  end;
+
+  try
+    oUsuario := TUsuario.Create(dtmPrincipal.dtmPrincipalDB);
+    oUsuario.codigo := oUsuarioLogado.codigo; // ? bug corrigido
+    oUsuario.senha  := edtSenhaNova.Text;
+    oUsuario.AlterarSenha;
+    oUsuarioLogado.senha := edtSenhaNova.Text; // atualiza sessão
+    MessageDlg('Senha alterada com sucesso!', mtInformation, [mbOK], 0);
+    LimparEdits;
+  finally
+    FreeAndNil(oUsuario);
   end;
 end;
 

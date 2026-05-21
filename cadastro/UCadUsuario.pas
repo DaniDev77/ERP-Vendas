@@ -74,22 +74,25 @@ end;
 
 procedure TfrmCadUsuario.btnGravarClick(Sender: TObject);
 begin
-   if oUsuario.UsuarioExiste(edtNome.Text)then begin
-     MessageDlg('Usuario já cadastrado',mtInformation, [mbok],0);
-     edtNome.SetFocus;
-     Abort;
-   end;
+  if Trim(edtNome.Text) = ''  then begin ShowMessage('Nome obrigatório!');  edtNome.SetFocus;  Exit; end;
+  if Trim(edtSenha.Text) = '' then begin ShowMessage('Senha obrigatória!'); edtSenha.SetFocus; Exit; end;
 
-   if edtUsuarioId.Text<>EmptyStr then
-      oUsuario.codigo:=StrToInt(edtUsuarioId.Text)
-   else
-      oUsuario.codigo:=0;
+  if (EstadoDoCadastro = ecInserir) and oUsuario.UsuarioExiste(edtNome.Text) then
+  begin
+    ShowMessage('Usuário já cadastrado!');
+    edtNome.SetFocus;
+    Exit;
+  end;
 
-   oUsuario.nome:=edtNome.Text;
-   oUsuario.senha:=edtSenha.Text;
-  // oUsuario.perfil:=lkpPerfil.KeyValue;
+  if edtUsuarioId.Text <> EmptyStr then
+    oUsuario.codigo := StrToInt(edtUsuarioId.Text)
+  else
+    oUsuario.codigo := 0;
+
+  oUsuario.nome  := Trim(edtNome.Text);
+  oUsuario.senha := Trim(edtSenha.Text);
+
   inherited;
-
 end;
 
 procedure TfrmCadUsuario.btnNovoClick(Sender: TObject);

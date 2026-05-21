@@ -98,6 +98,10 @@ type
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure btnGravarClick(Sender: TObject);
     procedure FDQListagemAfterScroll(DataSet: TDataSet);
+   // procedure edtTelefoneChange(Sender: TObject);
+    procedure edtTelefoneKeyPress(Sender: TObject; var Key: Char);
+  //  procedure edtCEPChange(Sender: TObject);
+    procedure edtCEPKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
 
     //procedure edtCreditoEnter(Sender: TObject);
 
@@ -188,6 +192,24 @@ begin
   edtNome.SetFocus;
 end;
 
+procedure TfrmCadCliente.edtCEPKeyUp(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+var
+  cep: string;
+begin
+  cep := SomenteNumeros(edtCEP.Text);
+
+  if Length(cep) > 8 then
+    cep := Copy(cep, 1, 8);
+
+  if Length(cep) > 5 then
+    edtCEP.Text := Copy(cep,1,5) + '-' + Copy(cep,6,3)
+  else
+    edtCEP.Text := cep;
+
+  edtCEP.SelStart := Length(edtCEP.Text);
+end;
+
 procedure TfrmCadCliente.edtCEPExit(Sender: TObject);
 var
   JSON: TJSONObject;
@@ -208,6 +230,7 @@ begin
     JSON.Free;
   end;
 end;
+
 
 procedure TfrmCadCliente.edtCpfCnpjChange(Sender: TObject);
 var
@@ -261,6 +284,16 @@ begin
   edtCpfCnpj.SelStart := Length(edtCpfCnpj.Text); // cursor no final
 end;
 
+
+
+
+procedure TfrmCadCliente.edtTelefoneKeyPress(Sender: TObject; var Key: Char);
+begin
+  inherited;
+
+  if not (Key in ['0'..'9', #8]) then
+    Key := #0;
+end;
 
 procedure TfrmCadCliente.edtTelefoneKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
 var
@@ -445,6 +478,7 @@ begin
   else
     Result := oCliente.Atualizar;
 
+    {$REGION 'Areea de gravar Credito'}
   // CONTROLE DE CRÉDITO (ÚNICO LUGAR)
   if Result then
   begin
@@ -471,6 +505,8 @@ begin
     edtCredito.Value      := 0;
     edtTotalCredito.Value := 0;
     CreditoOriginal       := 0;
+    {$ENDREGION}
+
   end;
 
 end;

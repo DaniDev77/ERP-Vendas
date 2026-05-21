@@ -4,14 +4,9 @@ inherited frmCadUsuario: TfrmCadUsuario
   TextHeight = 13
   inherited pgcPrincipal: TPageControl
     inherited tabListagem: TTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 791
-      ExplicitHeight = 308
       inherited pnlListagemTopo: TPanel
         Height = 89
         Color = 8282689
-        ParentBackground = False
         ExplicitHeight = 89
         inherited lblIndice: TLabel
           Width = 89
@@ -1653,10 +1648,6 @@ inherited frmCadUsuario: TfrmCadUsuario
       end
     end
     inherited tabManutencao: TTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 791
-      ExplicitHeight = 308
       object edtUsuarioId: TLabeledEdit
         Tag = 1
         Left = 282

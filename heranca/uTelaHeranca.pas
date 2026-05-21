@@ -713,6 +713,7 @@ begin
       Result := Result + Texto[i];
   end;
 end;
+
     procedure TForm1.tabManutencaoContextPopup(Sender: TObject; MousePos: TPoint; var Handled: Boolean);
 begin
 
@@ -891,11 +892,26 @@ end;
 
 {$REGION ' Email Valido'}
 function TForm1.EmailValido(Email: string): Boolean;
+var
+  at, dot, i: Integer;
+  local, dom: string;
 begin
-  Result := TRegEx.IsMatch(
-    Email,
-    '^[\w\.-]+@[\w\.-]+\.\w+$'
-  );
+  Result := False;
+  Email  := Trim(Email);
+  at     := Pos('@', Email);
+  if (at <= 1) or (at = Length(Email)) then Exit;
+  if Pos('@', Copy(Email, at+1, MaxInt)) > 0 then Exit;
+  local := Copy(Email, 1, at-1);
+  dom   := Copy(Email, at+1, MaxInt);
+  if (local[1]='.') or (local[Length(local)]='.') then Exit;
+  dot := 0;
+  for i := 1 to Length(dom) do if dom[i]='.' then dot := i;
+  if (dot <= 1) or (dot = Length(dom)) then Exit;
+  if (Length(dom)-dot) < 2 then Exit;
+  if (Length(dom)-dot) > 3 then Exit;  // ← máximo 3 letras: com, net, org, com, br...
+  for i := 1 to Length(Email) do
+    if not (Email[i] in ['a'..'z','A'..'Z','0'..'9','@','.','_','-','+']) then Exit;
+  Result := True;
 end;
 {$endregion}
 

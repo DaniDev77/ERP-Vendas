@@ -40,29 +40,32 @@ implementation
  uses cCadUsuario,Upricipal;
 
 procedure TfrmLogin.btnAcessarClick(Sender: TObject);
-var oUsuario:TUsuario;
+var oUsuario: TUsuario;
 begin
+  if Trim(edtUsuario.Text) = '' then begin ShowMessage('Informe o usuário!');  edtUsuario.SetFocus; Exit; end;
+  if Trim(edtSenha.Text)   = '' then begin ShowMessage('Informe a senha!');    edtSenha.SetFocus;   Exit; end;
+
   try
-   oUsuario:=TUsuario.Create(dtmPrincipal.dtmPrincipalDB);
-   if oUsuario.Logar(edtUsuario.Text, edtSenha.Text) then begin
-  oUsuarioLogado.codigo := oUsuario.codigo;
-  oUsuarioLogado.nome   := oUsuario.nome;
-  oUsuarioLogado.senha  := oUsuario.senha;
-  //charFormulario; // ? adicionar isso
-end
-    else begin
-     MessageDlg('Usuário Inválido', mtInformation,[mbOK],0);
+    oUsuario := TUsuario.Create(dtmPrincipal.dtmPrincipalDB);
+    if oUsuario.Logar(edtUsuario.Text, edtSenha.Text) then
+    begin
+      oUsuarioLogado.codigo := oUsuario.codigo;
+      oUsuarioLogado.nome   := oUsuario.nome;
+      oUsuarioLogado.senha  := oUsuario.senha;
+      MessageDlg('Usuário ' + oUsuarioLogado.nome + ' entrou no sistema.', mtInformation, [mbOK], 0);
+      FecharFormulario;
+    end
+    else
+    begin
+      MessageDlg('Usuário ou senha inválidos!', mtWarning, [mbOK], 0);
+      edtSenha.Clear;
       edtUsuario.SetFocus;
-  end
-     finally
-   if Assigned(oUsuario) then
-   FreeAndNil(oUsuario);
+    end;
+  finally
+    FreeAndNil(oUsuario);
   end;
-  MessageDlg('Usuário '+ oUsuarioLogado.nome+' entrou no sistema.', mtConfirmation, [mbYes], 0);
-  FecharFormulario;
 end;
- 
- 
+
 procedure TfrmLogin.btnFecharClick(Sender: TObject);
 begin
   FecharAplicacao;  //FECHA A APLICAÇAo
