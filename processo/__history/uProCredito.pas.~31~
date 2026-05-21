@@ -54,27 +54,41 @@ end;
 
 
 procedure TfrmProCredito.grdListagemDblClick(Sender: TObject);
+var
+  MsgCredito: string;
+   MsgVenda: string;
 begin
- ShowMessage(
-  '========= RELATÓRIO DE CRÉDITO =========' + #13#10 + #13#10 +
 
-  'Còdigo do Cliente: ' +
-  FDQListagem.FieldByName('clienteId').AsString + #13#10 +
+  if UpperCase(FDQListagem.FieldByName('tipo').AsString) = 'ENTRADA' then
+    MsgCredito := 'teve  adicionado à sua conta o valor de R$ '
+  else
+    MsgCredito := 'teve removido da sua conta o valor de R$ ';
 
-  'Cliente: ' +
-  FDQListagem.FieldByName('nome').AsString + #13#10 +
+    if FDQListagem.FieldByName('vendaId').IsNull then
+    MsgVenda := '.'
+  else
+    MsgVenda := ' referente à venda Nº ' +
+      FDQListagem.FieldByName('vendaId').AsString ;
 
-  'Tipo da Transação: ' +
-  FDQListagem.FieldByName('tipo').AsString + #13#10 +
+  ShowMessage(
 
-  'Quantidade de Crèdito Movimentada: ' +
-  FDQListagem.FieldByName('credito').AsString + #13#10 +
+    'O cliente ' +
+    FDQListagem.FieldByName('nome').AsString + ' ' +
 
-  'Data da Transiçâo: ' +
-  FDQListagem.FieldByName('data').AsString + #13#10 +
+    MsgCredito +
 
-  '===================================='
-);
+    FormatFloat('#,##0.00',
+      FDQListagem.FieldByName('credito').AsFloat) +
+
+    ' em ' +
+
+    FormatDateTime(
+      'dd/mm/yyyy ',
+      FDQListagem.FieldByName('data').AsDateTime
+    ) + MsgVenda+ '.'
+
+  );
+
 end;
 
 end.

@@ -21,6 +21,7 @@ type
     Image6: TImage;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure grdListagemDblClick(Sender: TObject);
 
   private
     { Private declarations }
@@ -51,5 +52,36 @@ end;
 
 
 
+
+procedure TfrmProCredito.grdListagemDblClick(Sender: TObject);
+var
+  MsgCredito: string;
+begin
+
+  if UpperCase(FDQListagem.FieldByName('tipo').AsString) = 'ENTRADA' then
+    MsgCredito := 'teve  adicionado à sua conta o valor de R$ '
+  else
+    MsgCredito := 'teve removido da sua conta o valor de R$ ';
+
+  ShowMessage(
+
+    'O cliente ' +
+    FDQListagem.FieldByName('nome').AsString + ' ' +
+
+    MsgCredito +
+
+    FormatFloat('#,##0.00',
+      FDQListagem.FieldByName('credito').AsFloat) +
+
+    ' em ' +
+
+    FormatDateTime(
+      'dd/mm/yyyy hh:nn',
+      FDQListagem.FieldByName('data').AsDateTime
+    ) + '.'
+
+  );
+
+end;
 
 end.

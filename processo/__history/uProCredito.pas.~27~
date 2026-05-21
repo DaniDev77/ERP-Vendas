@@ -54,11 +54,34 @@ end;
 
 
 procedure TfrmProCredito.grdListagemDblClick(Sender: TObject);
+var
+  MsgCredito: string;
 begin
+
+  if UpperCase(FDQListagem.FieldByName('tipo').AsString) = 'ENTRADA' then
+    MsgCredito := 'foi adicionado à sua conta o valor de R$ '
+  else
+    MsgCredito := 'foi removido da sua conta o valor de R$ ';
+
   ShowMessage(
-    'Cliente: ' + FDQListagem.FieldByName('nome').AsString + #13#10 +
-    'Crédito: R$ ' + FDQListagem.FieldByName('credito').AsString
+
+    'O cliente ' +
+    FDQListagem.FieldByName('nome').AsString + ' ' +
+
+    MsgCredito +
+
+    FormatFloat('#,##0.00',
+      FDQListagem.FieldByName('credito').AsFloat) +
+
+    ' em ' +
+
+    FormatDateTime(
+      'dd/mm/yyyy hh:nn:ss',
+      FDQListagem.FieldByName('data').AsDateTime
+    ) + '.'
+
   );
+
 end;
 
 end.

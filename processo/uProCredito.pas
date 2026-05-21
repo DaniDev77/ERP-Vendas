@@ -55,36 +55,40 @@ end;
 
 procedure TfrmProCredito.grdListagemDblClick(Sender: TObject);
 var
-  MsgVenda: string;
+  MsgCredito: string;
+   MsgVenda: string;
 begin
-  if FDQListagem.FieldByName('vendaId').IsNull then
-    MsgVenda := '.'
+
+  if UpperCase(FDQListagem.FieldByName('tipo').AsString) = 'ENTRADA' then
+    MsgCredito := 'teve  adicionado à sua conta o valor de R$ '
+  else
+    MsgCredito := 'teve removido da sua conta o valor de R$ ';
+
+    if FDQListagem.FieldByName('vendaId').IsNull then
+    MsgVenda := ''
   else
     MsgVenda := ' referente à venda Nº ' +
-      FDQListagem.FieldByName('vendaId').AsString + '.';
+      FDQListagem.FieldByName('vendaId').AsString ;
 
   ShowMessage(
-    'O cliente ' +
-    FDQListagem.FieldByName('nome').AsString +
 
-    ' teve uma movimentação de crédito no valor de R$ ' +
+    'O cliente ' +
+    FDQListagem.FieldByName('nome').AsString + ' ' +
+
+    MsgCredito +
 
     FormatFloat('#,##0.00',
       FDQListagem.FieldByName('credito').AsFloat) +
 
-    ' utilizando o tipo "' +
-
-    FDQListagem.FieldByName('tipo').AsString +
-
-    '" na data de ' +
+    ' em ' +
 
     FormatDateTime(
-      'dd/mm/yyyy',
+      'dd/mm/yyyy hh:nn',
       FDQListagem.FieldByName('data').AsDateTime
-    ) +
+    ) + MsgVenda+ '.'
 
-    MsgVenda
   );
+
 end;
 
 end.

@@ -21,6 +21,7 @@ type
     Image6: TImage;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure grdListagemDblClick(Sender: TObject);
 
   private
     { Private declarations }
@@ -51,5 +52,39 @@ end;
 
 
 
+
+procedure TfrmProCredito.grdListagemDblClick(Sender: TObject);
+var
+  MsgVenda: string;
+begin
+  if FDQListagem.FieldByName('vendaId').IsNull then
+    MsgVenda := '.'
+  else
+    MsgVenda := ' referente à venda Nº ' +
+      FDQListagem.FieldByName('vendaId').AsString + '.';
+
+  ShowMessage(
+    'O cliente ' +
+    FDQListagem.FieldByName('nome').AsString +
+
+    ' teve uma movimentação de crédito no valor de R$ ' +
+
+    FormatFloat('#,##0.00',
+      FDQListagem.FieldByName('credito').AsFloat) +
+
+    ' utilizando o tipo "' +
+
+    FDQListagem.FieldByName('tipo').AsString +
+
+    '" na data de ' +
+
+    FormatDateTime(
+      'dd/mm/yyyy',
+      FDQListagem.FieldByName('data').AsDateTime
+    ) +
+
+    MsgVenda
+  );
+end;
 
 end.
